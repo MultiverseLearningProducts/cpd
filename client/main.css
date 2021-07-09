@@ -1,0 +1,125 @@
+@font-face {
+  font-family: "TimesNRMTPro-Cond";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/TimesNRMTPro-Cond.otf")
+    format("opentype");
+}
+@font-face {
+  font-family: "AtlasGrotesk-Bold";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/AtlasGrotesk-Bold.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AtlasGrotesk-BoldItalic";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/AtlasGrotesk-BoldItalic.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AtlasGrotesk-Medium";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/AtlasGrotesk-Medium.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AtlasGrotesk-Regular";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/AtlasGrotesk-Regular.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "AtlasGrotesk-RegularItalic";
+  src: url("https://multiverselearningproducts.github.io/curriculum/fonts/AtlasGrotesk-RegularItalic.otf")
+    format("opentype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html {
+  font-family: "AtlasGrotesk-Regular";
+  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/bg.svg");
+  background-position: top center;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+}
+:root {
+  --mv-ultraviolet: #4d61f4;
+  --mv-supernova: #ffe352;
+  --mv-white-dwarf: #f4f4f4;
+  --mv-molten: #ff7c66;
+  --mv-electron: #64abff;
+  --mv-deep-space: #242456;
+  --mv-aurora: #59d8a1;
+  --mv-gray: #c8c8d5;
+}
+.mv-white {
+  color: var(--mv-white-dwarf);
+}
+.bg-mv-supernova {
+  background-color: var(--mv-supernova);
+}
+.bg-mv-white-dwarf {
+  background-color: var(--mv-white-dwarf);
+}
+h1,
+h2,
+h3,
+h4 {
+  font-family: "TimesNRMTPro-Cond";
+}
+
+h1 {
+  margin-block-start: 0;
+  margin-block-end: -3rem;
+}
+
+h1::before {
+  content: "";
+  display: block;
+  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/mv_supernova_tada.svg");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  height: 5rem;
+  width: 5rem;
+  position: relative;
+  top: 2.5rem;
+  left: -3rem;
+}
+
+h1::after {
+  content: "";
+  display: block;
+  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/mv_electron_underline.svg");
+  background-size: 100% auto;
+  background-repeat: no-repeat;
+  height: 5rem;
+  width: 24rem;
+  position: relative;
+  bottom: 1.5rem;
+  right: 0rem;
+}
+.ar-signIn, .signIn-link {
+  display: none !important;
+}
+.social-btn.google {
+  position: relative;
+  top: 6rem;
+  font-family: "AtlasGrotesk-Regular";
+  background-color: var(--mv-white-dwarf);
+  padding: 1.5rem 2rem 1.5rem 4.55rem;
+  color: var(--mv-deep-space);
+  width: 17rem;
+  border: solid 0px transparent;
+  border-radius: 3px;
+  box-shadow: 1px 1px 4px -1px black;
+}
+.social-btn.google::before {
+  content: url('https://design.google/static/images/google-g.svg');
+  position: absolute;
+  top: .5rem;
+  left: 1rem;
+}

@@ -1,0 +1,31 @@
+{
+  "name": "multiverse-cpd",
+  "version": "0.1.0",
+  "scripts": {
+    "start": "meteor run --settings settings.json",
+    "test": "meteor test --once --driver-package meteortesting:mocha",
+    "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
+    "visualize": "meteor --production --extra-packages bundle-visualizer"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.11.2",
+    "bcrypt": "^5.0.1",
+    "meteor-node-stubs": "^1.0.1",
+    "react": "^16.13.1",
+    "react-addons-pure-render-mixin": "^15.6.3",
+    "react-dom": "^16.13.1",
+    "react-meteor-hooks": "^0.3.1",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "semantic-ui-react": "^2.0.3",
+    "vis-data": "^7.1.2",
+    "vis-network": "^9.0.4"
+  },
+  "meteor": {
+    "mainModule": {
+      "client": "client/main.jsx",
+      "server": "server/main.js"
+    },
+    "testModule": "tests/main.js"
+  }
+}
