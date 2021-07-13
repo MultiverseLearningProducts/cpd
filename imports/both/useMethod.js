@@ -8,10 +8,8 @@ export function useMethod(methodName, { transform } = {}) {
 
   const call = (...args) => {
     setIsLoading(true)
-    // console.debug('USEMETHOD CALL', methodName, args)
     return new Promise((resolve, reject) => {
       Meteor.call(methodName, ...args, (err, result) => {
-        // console.debug('USEMETHOD RESPONSE:', { methodName, err, result })
         if (err) {
           setError(err)
           reject(err)

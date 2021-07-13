@@ -1,8 +1,9 @@
 import React from 'react'
 import { Redirect } from 'react-router'
 import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
-import { version } from '/package.json'
 import { Main } from './Main'
+
+Meteor.subscribe('users')
 
 const auth = props => {
   const { history, match } = props

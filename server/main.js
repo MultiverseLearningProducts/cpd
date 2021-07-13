@@ -1,8 +1,11 @@
-import { Meteor } from 'meteor/meteor';
+import { Meteor } from 'meteor/meteor'
 import { AccountsReact } from 'meteor/gwened:meteor-accounts-react'
 import { ServiceConfiguration } from 'meteor/service-configuration'
 import { fetch } from 'meteor/fetch'
+import { ProfilesCollection } from '/imports/db/ProfilesCollection'
 import { createForNetwork } from '/imports/both/networkTools'
+import '/imports/api/profilesPublications';
+import '/imports/api/usersPublications';
 
 ServiceConfiguration.configurations.upsert(
     { service: "google" },
@@ -17,7 +20,12 @@ ServiceConfiguration.configurations.upsert(
 
 AccountsReact.configure({})
 
-Meteor.startup(() => {});
+Meteor.startup(() => {
+  if (!ProfilesCollection.find({}).count()) {
+    console.info('No HiBob Data - Fetching from HiBob...')
+    Meteor.call('getNetworkData')
+  }
+});
 
 Meteor.methods({
   async getNetworkData() {
@@ -30,11 +38,23 @@ Meteor.methods({
         }
       });
       const data = await res.json();
-      return createForNetwork(data)
+      ProfilesCollection.remove({})
+      data.employees.forEach(employee => ProfilesCollection.insert(employee))
+      ProfilesCollection.rawCollection().createIndex({ id: 1 }, { unique: true })
+      return console.info(`Populated ProfilesCollection with ${ProfilesCollection.find().count()} records`)
     } catch (err) {
       console.error(err)
       return err;
     }
+  },
+  getProfiles() {
+    const profiles = ProfilesCollection.find({'work.department': 'Learning , Innovation & Operations'})
+    return createForNetwork(profiles)
+  },
+  getProfile(identifier) {
+    const query = identifier.includes('@') ? {email: {$eq: identifier}} : {id: {$eq: identifier}}
+    const [ profile ] = ProfilesCollection.find(query).fetch()
+    return profile
   }
 })
 

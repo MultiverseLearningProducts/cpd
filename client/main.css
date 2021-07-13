@@ -56,8 +56,17 @@ html {
   --mv-aurora: #59d8a1;
   --mv-gray: #c8c8d5;
 }
+.mv-atlas {
+  font-family: 'AtlasGrotesk-Regular', sans-serif;
+}
 .mv-white {
   color: var(--mv-white-dwarf);
+}
+.mv-supernova {
+  color: var(--mv-supernova);
+}
+.bg-mv-molten {
+  background-color: var(--mv-molten);
 }
 .bg-mv-supernova {
   background-color: var(--mv-supernova);
@@ -122,4 +131,68 @@ h1::after {
   position: absolute;
   top: .5rem;
   left: 1rem;
+}
+.network-loading::after {
+  content: "Rendering network graph ...";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(255,255,255,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#network-graph aside {
+  position: absolute;
+  width: 100vw;
+}
+#network-graph aside article header div {
+  margin-top: -1.5rem;
+  margin-right: -1rem;
+  width: 8rem;
+  height: 8rem;
+  background-position: center center;
+  background-size: cover;
+}
+.profile-avatar {
+  position: absolute;
+  top: 0;
+  right: -4rem;
+  height: 12rem;
+  width: 12rem;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 50%;
+}
+@media screen and (min-width: 30em) {
+  .network-loading::after {
+    content: "Rendering network graph ... please be patient";
+  }
+  #network-graph aside article {
+    padding: 1.5rem;
+  }
+}
+@media screen and (min-width: 60em) {
+  #network-graph aside {
+    position: absolute;
+    margin-top: 0rem;
+    top: 0;
+    bottom: 0;
+  }
+  #network-graph aside article {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 23rem;
+    border-radius: 0 0 27px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-height: 23rem;
+  }
+  #network-graph aside article header {
+    min-height: 6rem;
+  }
 }

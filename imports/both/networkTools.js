@@ -20,7 +20,7 @@ class Node {
             face: 'AtlasGrotesk-Regular',
             align: 'center'
         }
-        this.shape = 'circle'
+        this.shape = 'hexagon'
         // this.image = {
         //     unselected: employee.avatarUrl,
         //     selected: employee.avatarUrl
@@ -31,8 +31,8 @@ class Node {
             bottom:0,
             right:0
         }
-        this.label = employee.firstName
-        this.title = employee.displayName
+        this.label = employee.displayName
+        this.title = employee.work.title
         this.data = {...employee}
     }
 }
@@ -46,7 +46,7 @@ class Edge {
 }
 
 export function createForNetwork (data) {
-    const nodes = data.employees
+    const nodes = data
         .map(employee => new Node(employee))
         .filter(employee => employee.data.work.department === 'Learning , Innovation & Operations')
     
