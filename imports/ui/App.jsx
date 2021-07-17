@@ -1,6 +1,6 @@
 import React from 'react'
 import { Redirect } from 'react-router'
-import { BrowserRouter, Route, Switch, Link } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Main } from './Main'
 
 Meteor.subscribe('users')
@@ -10,7 +10,9 @@ const auth = props => {
   const { path } = match
   if (!Meteor.user() && path !== '/sign-in') return <Redirect to="/sign-in"/>
   if (Meteor.user() && path === '/sign-out') {
-    Meteor.logout()
+    Meteor.logout(err => {
+      err ? console.error(err) : window.location.replace(window.location.origin)
+    })
     return <Redirect to="/sign-in"/>
   }
   return <Main history={history} match={match} />

@@ -32,7 +32,6 @@ class Node {
             right:0
         }
         this.label = employee.displayName
-        this.title = employee.work.title
         this.data = {...employee}
     }
 }

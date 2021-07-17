@@ -5,7 +5,9 @@ import { fetch } from 'meteor/fetch'
 import { ProfilesCollection } from '/imports/db/ProfilesCollection'
 import { createForNetwork } from '/imports/both/networkTools'
 import '/imports/api/profilesPublications';
+import '/imports/api/observationsPublications';
 import '/imports/api/usersPublications';
+import { googlePermissions } from '/imports/both/googlePermissions'
 
 ServiceConfiguration.configurations.upsert(
     { service: "google" },
@@ -18,7 +20,13 @@ ServiceConfiguration.configurations.upsert(
     }
 )
 
-AccountsReact.configure({})
+AccountsReact.configure({
+  oauth: {
+    google: {
+      requestPermissions: googlePermissions
+    }
+  }
+})
 
 Meteor.startup(() => {
   if (!ProfilesCollection.find({}).count()) {
@@ -55,6 +63,28 @@ Meteor.methods({
     const query = identifier.includes('@') ? {email: {$eq: identifier}} : {id: {$eq: identifier}}
     const [ profile ] = ProfilesCollection.find(query).fetch()
     return profile
+  },
+  async getGoogleCalEvents(email) {
+    if (!Meteor.user()) return
+    const {services: {google}} = Meteor.user()
+    try {
+      const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(email || google.email)}/events`
+      const headers = {'Authorization': `Bearer ${google.accessToken}`}
+      const params = new URLSearchParams({
+        q: '[obs]',
+        showHiddenInvitations: true,
+        alwaysIncludeEmail: true
+      })
+      const res = await fetch(`${url}?${params}`, {
+        method: 'GET',
+        headers
+      })
+      const data = await res.json()
+      console.info(`getGoogleCalEvents: ${data.items.length} obs for ${email}`)
+      return data
+    } catch(err) {
+      return err
+    }
   }
 })
 

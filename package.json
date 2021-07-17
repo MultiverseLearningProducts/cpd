@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "scripts": {
     "start": "meteor run --settings settings.json",
+    "prod": "METEOR_SETTINGS=$(cat settings.json) node main.js",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
     "visualize": "meteor --production --extra-packages bundle-visualizer"
@@ -10,9 +11,11 @@
   "dependencies": {
     "@babel/runtime": "^7.11.2",
     "bcrypt": "^5.0.1",
+    "chart.js": "^3.4.1",
     "meteor-node-stubs": "^1.0.1",
     "react": "^16.13.1",
     "react-addons-pure-render-mixin": "^15.6.3",
+    "react-chartjs-2": "^3.0.3",
     "react-dom": "^16.13.1",
     "react-meteor-hooks": "^0.3.1",
     "react-router": "^5.2.0",

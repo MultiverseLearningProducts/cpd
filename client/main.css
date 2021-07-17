@@ -74,6 +74,12 @@ html {
 .bg-mv-white-dwarf {
   background-color: var(--mv-white-dwarf);
 }
+.b--mv-aurora {
+  border-color: var(--mv-aurora);
+}
+.b--mv-ultraviolet {
+  border-color: var(--mv-ultraviolet);
+}
 h1,
 h2,
 h3,
@@ -132,6 +138,9 @@ h1::after {
   top: .5rem;
   left: 1rem;
 }
+#header {
+  height: 5vh;
+}
 .network-loading::after {
   content: "Rendering network graph ...";
   position: absolute;
@@ -144,18 +153,28 @@ h1::after {
   align-items: center;
   justify-content: center;
 }
-#network-graph aside {
-  position: absolute;
+#network-info-panel {
+  position: fixed;
+  bottom: 0rem;
+  height: 10vh;
   width: 100vw;
+  transition: height 1s cubic-bezier(0.075, 0.82, 0.165, 1);
 }
-#network-graph aside article header div {
-  margin-top: -1.5rem;
+#network-info-panel.open {
+  height: 95vh;
+}
+.info-panel-avatar {
+  margin-top: -1rem;
   margin-right: -1rem;
   width: 8rem;
   height: 8rem;
   background-position: center center;
   background-size: cover;
 }
+#network-info-panel main {
+  height: 100%;
+}
+
 .profile-avatar {
   position: absolute;
   top: 0;
@@ -170,29 +189,11 @@ h1::after {
   .network-loading::after {
     content: "Rendering network graph ... please be patient";
   }
-  #network-graph aside article {
-    padding: 1.5rem;
-  }
 }
 @media screen and (min-width: 60em) {
-  #network-graph aside {
-    position: absolute;
-    margin-top: 0rem;
-    top: 0;
-    bottom: 0;
-  }
-  #network-graph aside article {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 23rem;
-    border-radius: 0 0 27px 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    max-height: 23rem;
-  }
-  #network-graph aside article header {
-    min-height: 6rem;
+  #network-info-panel main {
+    display: grid;
+    grid-template-columns: auto 50%;
+    grid-template-rows: auto;
   }
 }
