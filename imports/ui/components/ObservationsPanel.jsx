@@ -40,7 +40,7 @@ const ObsCard = props => {
                 dateTime
             },
             htmlLink,
-            attendees,
+            attendees = [],
             organizer
         },
         profiles
@@ -48,6 +48,7 @@ const ObsCard = props => {
     const isPast = new Date(dateTime).getTime() <= new Date().getTime()
     const findProfile = _email => props.profiles.nodes.find(p => p.data.email === _email)
     const [attendeeObserver] = attendees.filter(att => !att.organizer)
+    if (!attendeeObserver) return null
     const observer = findProfile(attendeeObserver.email)
     const observed = findProfile(organizer.email)
     if (!observer || !observed) return null
@@ -59,8 +60,9 @@ const ObsCard = props => {
                 <time className="dib" dateTime={new Date(dateTime)}>{new Date(dateTime).toDateString()}&nbsp;at&nbsp;{new Date(dateTime).toLocaleTimeString().substring(0, 5)}</time>
                 <a className="link ml1" href={htmlLink} target="_Blank">📆</a>
                 {isPast ? (
-                    <nav>
-                        <button type="button">Add Reflection</button>
+                    <nav className="pv2 flex justify-around">
+                        <button type="button">Needs Reflection</button>
+                        <button type="button">Needs Feedback</button>
                     </nav>
                 ) : null}
             </div>
@@ -77,6 +79,7 @@ export const ObservationsPanel = props => {
             {calEvents.length ? (
                 <section>
                     {calEvents.filter(calEvt => {
+                        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
                         return new Date(calEvt.start.dateTime).getTime() > new Date().getTime()
                     }).map(calEvt => {
                         return (
@@ -94,6 +97,7 @@ export const ObservationsPanel = props => {
             {calEvents.length ? (
                 <section>
                     {calEvents.filter(calEvt => {
+                        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
                         return new Date(calEvt.start.dateTime).getTime() <= new Date().getTime()
                     }).map(calEvt => {
                         return (

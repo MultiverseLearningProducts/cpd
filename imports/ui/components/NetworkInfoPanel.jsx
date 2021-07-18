@@ -30,7 +30,12 @@ export const NetworkInfoPanel = props => {
         profiles
     } = props
 
-    const toggleOpen = () => setOpen(!open)
+    const toggleOpen = () => {
+        if (open) {
+            console.log("isClosing", open)
+        }
+        setOpen(!open)
+    }
 
     useEffect(() => {
         getEvents.call(email)
