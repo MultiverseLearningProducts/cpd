@@ -48,6 +48,22 @@ export function createForNetwork (data) {
     const nodes = data
         .map(employee => new Node(employee))
         .filter(employee => employee.data.work.department === 'Learning , Innovation & Operations')
+        .map(employee => {
+            const hasCoachRole = [
+                'emma.arlow@multiverse.io',
+                'stephanie.wright@multiverse.io',
+                'stephanie.trattles@multiverse.io',
+                'kristina.raissi@multiverse.io',
+                'sean.landes@multiverse.io',
+                'greg.west@multiverse.io',
+                'jacqueline.chan@multiverse.io'
+            ]
+            const isCoach = employee.data.work.title.toLowerCase().includes('coach')
+            || hasCoachRole.includes(employee.data.email)
+            const background = isCoach ? '#64abff' : '#c8c8d5'
+            employee.color.background = background
+            return employee
+        })
     
     const edges = nodes.map(employee => {
         try {

@@ -18,7 +18,7 @@ export const RadarChart = props => {
     }
 
     return (
-        <section id="radar-chart" className="mw6 ml-auto mr-auto">
+        <section id="radar-chart" className="mw6 ml-auto mr-auto w-100">
             <Radar data={data} width='100%' height='480px'/>
         </section>
     )

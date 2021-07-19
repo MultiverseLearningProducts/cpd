@@ -193,7 +193,7 @@ h1::after {
 @media screen and (min-width: 60em) {
   #network-info-panel main {
     display: grid;
-    grid-template-columns: auto 50%;
+    grid-template-columns: 50vw auto;
     grid-template-rows: auto;
   }
 }
