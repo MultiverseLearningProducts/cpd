@@ -2,11 +2,14 @@ import React, { useState, useEffect, useReducer } from 'react'
 import { useMethod } from '../../both/useMethod'
 import { ObservationsPanel } from './ObservationsPanel'
 import { RadarChart } from './RadarChart'
+import { FeedbacksPanel } from './FeedbacksPanel'
+import { TouchBarH } from './DecorativeElements'
 
 export const NetworkInfoPanel = props => {
     const [open, setOpen] = useState(false)
     const [calEvents, setCalEvents] = useState([])
     const getEvents = useMethod('getGoogleCalEvents')
+    const [selectedObs, setSelectedObs] = useState(null)
     const {
         selected: {
             data: {
@@ -32,7 +35,8 @@ export const NetworkInfoPanel = props => {
 
     const toggleOpen = () => {
         if (open) {
-            console.log("isClosing", open)
+            console.log("isClosing scrollIntoView", open)
+            setSelectedObs(null)
         }
         setOpen(!open)
     }
@@ -44,14 +48,15 @@ export const NetworkInfoPanel = props => {
             })
             .catch(console.error)
     }, [props.selected])
+
+    const onSelected = ({observer, observed}) => {
+        setSelectedObs({observer, observed})
+    }
+    console.log(selectedObs)
+
     return (
-        <aside id="network-info-panel" onClick={toggleOpen} className={`tc bg-mv-supernova overflow-scroll ${open ? 'open' : 'closed'}`}>
-            <svg width="127px" height="7px" viewBox="0 0 127 7" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-                <title>Rectangle</title>
-                <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
-                    <rect id="Rectangle" fill="#D9C249" x="0" y="0" width="127" height="7" rx="3.5"></rect>
-                </g>
-            </svg>
+        <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-scroll ${open ? 'open' : 'closed'}`}>
+            <nav onClick={toggleOpen}><TouchBarH /></nav>
             <header className="w-100 flex items-center tl">
                 <div className="flex-auto pa2 pr5 flex flex-column">
                     <h2 className="mv0">{displayName}</h2>
@@ -60,9 +65,16 @@ export const NetworkInfoPanel = props => {
                 </div>
                 <div className="br-100 flex-none info-panel-avatar" style={{backgroundImage: `url('${avatarUrl || avatar}')`}}></div>
             </header>
-            <main>
-                {props.selected ? <RadarChart selected={props.selected} /> : null}
-                {profiles ? <ObservationsPanel calEvents={calEvents} profiles={profiles} /> : null}
+            <main id="network-info-panel-main" className="overflow-x-scroll overflow-y-hidden absolute" style={{left: selectedObs ? '-100vw' : '0'}}>
+                <section id="panel-1">
+                    {props.selected ? <RadarChart selected={props.selected} /> : null}
+                    {profiles ? <ObservationsPanel calEvents={calEvents} profiles={profiles} onSelected={onSelected} /> : null}
+                </section>
+                <section id="panel-2">
+                    {selectedObs 
+                    ? <FeedbacksPanel selectedObs={selectedObs} setSelectedObs={setSelectedObs}/> 
+                    : null}
+                </section>
             </main>
         </aside>
     )

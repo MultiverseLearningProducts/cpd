@@ -1,7 +1,7 @@
 import React from 'react'
-import { Left2RightArrow } from './Left2RightArrow'
+import { Left2RightArrow, TouchBarV } from './DecorativeElements'
 
-const ObsAvatars = props => {
+export const ObsAvatars = props => {
     const { observer, observed } = props
     const user = Meteor.user()
     const isObserving = user.services.google.email === observer.data.email
@@ -30,7 +30,7 @@ const ObsAvatars = props => {
     )
 }
 
-const ObsCard = props => {
+export const ObsCard = props => {
     const {
         calEvt: {
             id,
@@ -43,7 +43,8 @@ const ObsCard = props => {
             attendees = [],
             organizer
         },
-        profiles
+        profiles,
+        onSelected
     } = props
     const isPast = new Date(dateTime).getTime() <= new Date().getTime()
     const findProfile = _email => props.profiles.nodes.find(p => p.data.email === _email)
@@ -52,41 +53,46 @@ const ObsCard = props => {
     const observer = findProfile(attendeeObserver.email)
     const observed = findProfile(organizer.email)
     if (!observer || !observed) return null
+    const touchBarStyles = {
+        position: 'absolute',
+        right: '8px',
+        top: '50%',
+        transform: 'translate(0,-50%)'
+    }
     return (
-        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf">
+        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative">
             <ObsAvatars observer={observer} observed={observed} />
             <div className="mt2">
                 <span>{observer && observer.data && observer.data.firstName} observing {observed && observed.data && observed.data.firstName}&nbsp;on&nbsp;</span>
                 <time className="dib" dateTime={new Date(dateTime)}>{new Date(dateTime).toDateString()}&nbsp;at&nbsp;{new Date(dateTime).toLocaleTimeString().substring(0, 5)}</time>
                 <a className="link ml1" href={htmlLink} target="_Blank">📆</a>
-                {isPast ? (
-                    <nav className="pv2 flex justify-around">
-                        <button type="button">Needs Reflection</button>
-                        <button type="button">Needs Feedback</button>
-                    </nav>
-                ) : null}
             </div>
+            {isPast ? (
+                <nav onClick={event => {event.stopPropagation(); onSelected({observer, observed})}} style={touchBarStyles}>
+                    <TouchBarV />
+                </nav>
+            ) : null}
         </article>
     )
 }
 
 export const ObservationsPanel = props => {
     const { profiles, calEvents } = props
+    const futureEvents = calEvents.filter(calEvt => {
+        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
+        return new Date(calEvt.start.dateTime).getTime() > new Date().getTime()
+    })
+    const pastEvents = calEvents.filter(calEvt => {
+        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
+        return new Date(calEvt.start.dateTime).getTime() <= new Date().getTime()
+    })
 
     return (
         <aside className="pa2 ml-auto mr-auto">
             <h3 className="underline">Observations Booked</h3>
-            {calEvents.length ? (
+            {futureEvents.length ? (
                 <section>
-                    {calEvents.filter(calEvt => {
-                        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
-                        return new Date(calEvt.start.dateTime).getTime() > new Date().getTime()
-                    }).map(calEvt => {
-                        return (
-                            <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} />
-                        )
-                    })
-                    }
+                    {futureEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
                 <p className="tl lh-copy measure">
@@ -94,17 +100,9 @@ export const ObservationsPanel = props => {
                 </p>
             )}
             <h3 className="underline">Previous Observations</h3>
-            {calEvents.length ? (
+            {pastEvents.length ? (
                 <section>
-                    {calEvents.filter(calEvt => {
-                        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
-                        return new Date(calEvt.start.dateTime).getTime() <= new Date().getTime()
-                    }).map(calEvt => {
-                        return (
-                            <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} />
-                        )
-                    })
-                    }
+                    {pastEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
                 <p className="tl lh-copy measure">
