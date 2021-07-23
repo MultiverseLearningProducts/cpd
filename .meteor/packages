@@ -24,3 +24,4 @@ service-configuration@1.0.11
 gwened:meteor-accounts-react
 meteoreact:accounts-unstyled
 fetch
+tracker

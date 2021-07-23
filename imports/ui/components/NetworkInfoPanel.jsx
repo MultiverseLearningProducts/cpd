@@ -35,7 +35,7 @@ export const NetworkInfoPanel = props => {
 
     const toggleOpen = () => {
         if (open) {
-            console.log("isClosing scrollIntoView", open)
+            console.log("isClosing TODO:scrollIntoView", open)
             setSelectedObs(null)
         }
         setOpen(!open)
@@ -49,10 +49,9 @@ export const NetworkInfoPanel = props => {
             .catch(console.error)
     }, [props.selected])
 
-    const onSelected = ({observer, observed}) => {
-        setSelectedObs({observer, observed})
+    const onSelected = ({observer, observed, calEvt}) => {
+        setSelectedObs({observer, observed, calEvt})
     }
-    console.log(selectedObs)
 
     return (
         <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-scroll ${open ? 'open' : 'closed'}`}>

@@ -190,6 +190,9 @@ h1::after {
   background-size: cover;
   border-radius: 50%;
 }
+.sun-editor {
+  margin: auto;
+}
 @media screen and (min-width: 30em) {
   .network-loading::after {
     content: "Rendering network graph ... please be patient";

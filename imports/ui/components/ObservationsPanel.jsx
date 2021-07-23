@@ -68,7 +68,7 @@ export const ObsCard = props => {
                 <a className="link ml1" href={htmlLink} target="_Blank">📆</a>
             </div>
             {isPast ? (
-                <nav onClick={event => {event.stopPropagation(); onSelected({observer, observed})}} style={touchBarStyles}>
+                <nav onClick={event => {event.stopPropagation(); onSelected({observer, observed, calEvt: props.calEvt})}} style={touchBarStyles}>
                     <TouchBarV />
                 </nav>
             ) : null}
