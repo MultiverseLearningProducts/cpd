@@ -140,6 +140,9 @@ h1::after {
 #header {
   height: 5vh;
 }
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
 .network-loading::after {
   content: "Rendering network graph ...";
   position: absolute;
@@ -151,6 +154,33 @@ h1::after {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  width: 50px;
+  height: 50px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 4px solid var(--mv-electron);
+  border-top-color: var(--mv-gray);
+  animation: spinner .6s linear infinite;
+  z-index: 10;
+}
+.rcs-grid-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 12;
 }
 #network-info-panel {
   position: fixed;

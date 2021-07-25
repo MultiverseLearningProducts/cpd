@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useMethod } from '../../both/useMethod'
 import VisNetworkReactComponent from 'vis-network-react'
 import { NetworkInfoPanel } from './NetworkInfoPanel'
+import { Grid } from 'react-css-spinners'
 
 export const VisNetwork = props => {
 	const { user } = props
@@ -69,7 +70,7 @@ export const VisNetwork = props => {
 	}
 
 	return (
-		<section id="network-graph" className={`relative ${networkRendered ? '' : 'network-loading'}`}>
+		<section id="network-graph" className={`relative ${networkRendered ? '' : 'network-loading spinner'}`}>
 			<VisNetworkReactComponent style={style} events={events} data={profiles.data} options={networkOptions} getNetwork={getNetwork} />
 			{selected ? <NetworkInfoPanel selected={selected} profiles={profiles.data} /> : null}
 		</section>
