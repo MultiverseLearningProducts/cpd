@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react'
+import React, { useRef } from 'react'
 import SunEditor from 'suneditor-react'
 import 'suneditor/dist/css/suneditor.min.css'
 
@@ -11,12 +11,8 @@ export const Editor = props => {
 
     const options = {
         buttonList: [
-            ['undo', 'redo'],
-            ['fontSize'],
-            ['fontColor'],
-            ['bold', 'underline', 'italic'],
-            ['align'],
-            ['horizontalRule', 'list', 'link']
+            ['undo', 'redo', 'fontSize', 'fontColor', 'bold', 'underline', 'italic', 'align'],
+            ['-right', 'horizontalRule', 'list', 'link']
         ],
         fontSize: [12, 14, 18, 24],
         colorList: [
@@ -30,8 +26,7 @@ export const Editor = props => {
             '#c8c8d5'           
         ],
         linkProtocol: 'link',
-        width: '100%',
-        maxWidth: '590px'
+        width: '100%'
     }
     const style = `
         text-align: left;

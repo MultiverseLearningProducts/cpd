@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useMethod } from '../../both/useMethod'
 import { ObservationsPanel } from './ObservationsPanel'
 import { RadarChart } from './RadarChart'
