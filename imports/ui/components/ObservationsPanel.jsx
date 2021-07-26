@@ -3,10 +3,7 @@ import { Left2RightArrow, TouchBarV } from './DecorativeElements'
 
 export const ObsAvatars = props => {
     const { observer, observed } = props
-    const user = Meteor.user()
-    const isObserving = user.services.google.email === observer.data.email
-    return isObserving
-    ? (
+    return (
         <article className="flex items-center justify-center">
             <span className="dib" className="ba bw3 b--mv-ultraviolet br-100 info-panel-avatar" style={{ backgroundImage: `url('${observer.data.avatarUrl || observer.data.about.avatar}')` }}>
                 <img className="dn" alt={observer.data.firstName} />
@@ -14,17 +11,6 @@ export const ObsAvatars = props => {
             <span className="dib" style={{transform: `scale(1,1)`}}><Left2RightArrow /></span>
             <span className="dib" className="ba bw3 b--mv-aurora br-100 info-panel-avatar" style={{ backgroundImage: `url('${observed.data.avatarUrl || observed.data.about.avatar}')` }}>
                 <img className="dn" alt={observed.data.firstName} />
-            </span>
-        </article>
-    )
-    : (
-        <article className="flex items-center justify-center">
-            <span className="dib" className="ba bw3 b--mv-aurora br-100 info-panel-avatar" style={{ backgroundImage: `url('${observed.data.avatarUrl || observed.data.about.avatar}')` }}>
-                <img className="dn" alt={observed.data.firstName} />
-            </span>
-            <span className="dib" style={{transform: `scale(-1,1)`}}><Left2RightArrow /></span>
-            <span className="dib" className="ba bw3 b--mv-ultraviolet br-100 info-panel-avatar" style={{ backgroundImage: `url('${observer.data.avatarUrl || observer.data.about.avatar}')` }}>
-                <img className="dn" alt={observer.data.firstName} />
             </span>
         </article>
     )

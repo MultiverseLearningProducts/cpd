@@ -71,9 +71,9 @@ Meteor.methods({
       const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(email || google.email)}/events`
       const headers = {'Authorization': `Bearer ${google.accessToken}`}
       const params = new URLSearchParams({
-        q: '[obs]',
-        showHiddenInvitations: true,
-        alwaysIncludeEmail: true
+        q: '(obs)',
+        orderBy: 'updated',
+        showHiddenInvitations: true
       })
       const res = await fetch(`${url}?${params}`, {
         method: 'GET',
@@ -81,6 +81,9 @@ Meteor.methods({
       })
       const data = await res.json()
       console.info(`getGoogleCalEvents: ${data.items.length} obs for ${email}`)
+      data.items = data.items.sort((a, b) => {
+        return new Date(a.start.dateTime) < new Date(b.start.dateTime) ? -1 : 1
+      })
       return data
     } catch(err) {
       return err

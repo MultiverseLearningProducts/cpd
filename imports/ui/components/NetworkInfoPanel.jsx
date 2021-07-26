@@ -64,7 +64,7 @@ export const NetworkInfoPanel = props => {
                 </div>
                 <div className="br-100 flex-none info-panel-avatar" style={{backgroundImage: `url('${avatarUrl || avatar}')`}}></div>
             </header>
-            <main id="network-info-panel-main" className="overflow-x-scroll overflow-y-hidden absolute" style={{left: selectedObs ? '-100vw' : '0'}}>
+            <main id="network-info-panel-main" className="overflow-x-hidden overflow-y-scroll absolute" style={{left: selectedObs ? '-100vw' : '0'}}>
                 <section id="panel-1">
                     {props.selected ? <RadarChart selected={props.selected} /> : null}
                     {profiles ? <ObservationsPanel calEvents={calEvents} profiles={profiles} onSelected={onSelected} /> : null}

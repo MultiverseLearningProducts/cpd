@@ -36,13 +36,10 @@ const Feedback = ({ HTMLcontent, email, avatar }) => {
     )
 }
 
-const FeedbackBtn = ({label = 'Add Feedback'}) => {
-    
-}
-
 const Feedbacks = props => {
     if (!props.selectedObs) return null
     const [feedback, setFeedback] = useState("")
+    const [privateFeedback, setPrivateFeedback] = useState("")
     const [tags, setTags] = useState([])
     const user = Meteor.user()
 
@@ -79,8 +76,10 @@ const Feedbacks = props => {
                 email: observed.data.email,
                 avatar: observed.data.avatarUrl || observed.data.about.avatar
             },
-            reflection: !first_feedback ? feedback : null,
-            feedback: first_feedback ? first_feedback : null,
+            reflection: !first_feedback ? feedback : "",
+            feedback: first_feedback ? first_feedback : "",
+            private_reflection: privateFeedback,
+            private_feedback: privateFeedback,
             tags: tags
         })
         ObservationsCollection.insert(obs, (err) => {
@@ -89,6 +88,7 @@ const Feedbacks = props => {
                 updateObservationsCollection({ reflection: feedback })
             } else {
                 setFeedback("")
+                setPrivateFeedback("")
             }
         })
     }
@@ -97,6 +97,7 @@ const Feedbacks = props => {
         ObservationsCollection.update(observation._id, { $set: update }, (err) => {
             if (err) console.error(err)
             setFeedback("")
+            setPrivateFeedback("")
         })
     }
 
@@ -104,6 +105,12 @@ const Feedbacks = props => {
         updateObservationsCollection({
             feedbacks: [...observation.feedbacks, { feedback, user }]
         })
+    }
+
+    const showPrivate = () => {
+        const {services: {google: { email }}} = user
+        return email === observer.data.email
+        || email === observed.data.email
     }
 
     const touchBarStyles = {
@@ -116,29 +123,38 @@ const Feedbacks = props => {
         <article id="feedbacks-panel" className="pa2 pt4">
             <nav style={touchBarStyles} onClick={event => { event.stopPropagation(); props.setSelectedObs(null) }}><TouchBarV /></nav>
             <ObsAvatars observer={observer} observed={observed} />
-            {observation && observation.reflection ? (
-                <section>
-                    <Feedback
-                        HTMLcontent={observation.reflection}
-                        email={observation.observed.email}
-                        avatar={observation.observed.avatar} />
-                </section>
-            ) : null}
-            {observation && observation.feedback ? (
-                <section>
-                    <Feedback
-                        HTMLcontent={observation.feedback}
-                        email={observation.observer.email}
-                        avatar={observation.observer.avatar} />
+            {observation && (observation.reflection || observation.feedback) ? (
+                <section className="bg-mv-white-dwarf bg-lined-paper pl6 pv2 ma2 tl ml-auto mr-auto mw7 relative">
+                    {observation.reflection ? (
+                        <span>{parse(observed.data.firstName + observation.reflection)}</span>
+                    ) : null}
+                    {showPrivate && observation.private_reflection ? (
+                        <span className="o-80">{parse(observation.private_reflection)}</span>
+                    ) : null}
+                    {observation.feedback ? (
+                        <span className="i">{parse(observer.data.firstName + observation.feedback)}</span>
+                    ) : null}
+                    {showPrivate && observation.private_feedback ? (
+                        <span className="o-80">{parse(observation.private_feedback)}</span>
+                    ) : null}
                 </section>
             ) : null}
             {isObserved && !observation ? (
                 <section>
+                    <label className="dib mv2 tl w-100">Public reflection</label>
                     <Editor
                         name="reflection"
                         defaultValue={feedback}
                         onChange={setFeedback}
                         placeholder="Add your reflection. How do you think it went? What where you trying to achieve or work on?" />
+                    <div className="o-80">
+                        <label className="dib mv2 tl w-100">Private reflection</label>
+                        <Editor
+                            name="private-reflection"
+                            defaultValue={privateFeedback}
+                            onChange={setPrivateFeedback}
+                            placeholder="Your private reflection. Only you and your observer partner will ever see this" />
+                    </div>
                     <section className="flex justify-end items-center">
                         <button
                             className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
@@ -155,11 +171,20 @@ const Feedbacks = props => {
             ) : null}
             {isObserver && !observation ? (
                 <section>
+                    <label className="dib mv2 tl w-100">Public feedback</label>
                     <Editor
-                        name="first_feedback"
+                        name="first-feedback"
                         defaultValue={feedback}
                         onChange={setFeedback}
                         placeholder={`${observed.data.firstName} has not left a reflection yet, but you can add your feedback now.`} />
+                    <div className="o-80">
+                        <label className="dib mv2 tl w-100">Private feedback</label>
+                        <Editor
+                            name="private-feedback"
+                            defaultValue={privateFeedback}
+                            onChange={setPrivateFeedback}
+                            placeholder="Your private feedback. Only you and your observer partner will ever see this." />
+                    </div>
                     <section className="flex justify-end items-center">
                         <CoachRubricTags onChange={setTags} />
                         <button
@@ -170,11 +195,20 @@ const Feedbacks = props => {
             ) : null}
             {isObserver && observation && observation.reflection ? (
                 <section>
+                    <label className="dib mv2 tl w-100">Public feedback</label>
                     <Editor
                         name="feedback"
                         defaultValue={feedback}
                         onChange={setFeedback}
                         placeholder={`Respond to ${observed.data.firstName}'s reflection. Pick out aspects of the rubric that you observed.`} />
+                    <div className="o-80">
+                        <label className="dib mv2 tl w-100">Private feedback</label>
+                        <Editor
+                            name="private-feedback"
+                            defaultValue={privateFeedback}
+                            onChange={setPrivateFeedback}
+                            placeholder="Your private feedback. Only you and your observer partner will ever see this." />
+                    </div>
                     <section className="flex justify-end items-center">
                         <CoachRubricTags onChange={setTags} />
                         <button
@@ -188,7 +222,7 @@ const Feedbacks = props => {
                     <p>Waiting for {observed.data.firstName} to leave a reflection and {observer.data.firstName} to leave some feedback. Come back later to see what went on in this session.</p>
                     <section className="flex justify-end items-center">
                         <button
-                            className="flex-none bg-mv-supernova mv-white shadow-4 ml2 pa2 br3 b--transparent"
+                            className="flex-none bg-mv-supernova shadow-4 ml2 pa2 br3 b--transparent"
                             onClick={event => { event.stopPropagation(); props.setSelectedObs(null) }}>Back</button>
                     </section>
                 </section>

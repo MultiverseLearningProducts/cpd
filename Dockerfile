@@ -34,6 +34,6 @@ RUN bash $SCRIPTS_FOLDER/build-meteor-npm-dependencies.sh
 
 COPY *.json $APP_BUNDLE_FOLDER/bundle/
 # Start app
-ENTRYPOINT ["/docker/entrypoint.sh"]
+# ENTRYPOINT ["/docker/entrypoint.sh"]
 
-CMD ["npm", "run", "prod"]
+# CMD ["npm", "run", "prod"]

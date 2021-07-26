@@ -171,17 +171,6 @@ h1::after {
   animation: spinner .6s linear infinite;
   z-index: 10;
 }
-.rcs-grid-container {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  left: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 12;
-}
 #network-info-panel {
   position: fixed;
   bottom: 0rem;
@@ -214,7 +203,6 @@ h1::after {
   left: 0;
   transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
-
 .profile-avatar {
   position: absolute;
   top: 0;
