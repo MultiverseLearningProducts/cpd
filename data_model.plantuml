@@ -1,0 +1,36 @@
+@startuml
+left to right direction
+entity teamleads {
+    id
+    fullName
+    email
+}
+entity coaches {
+    id
+    fullName
+    email
+    teamlead_id
+}
+entity observations {
+    id
+    observer_email
+    observed_email
+    date
+    reflection
+    feedback
+}
+entity tags {
+    id
+    value
+    label
+}
+entity observations_tags {
+    id
+    tag_id
+    observation_id
+}
+teamleads::id---{coaches::teamlead_id
+coaches::email---{observations::observed_email
+observations::id}---{observations_tags::observation_id
+observations_tags::tag_id}--{tags::id
+@enduml

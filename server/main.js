@@ -3,6 +3,7 @@ import { AccountsReact } from 'meteor/gwened:meteor-accounts-react'
 import { ServiceConfiguration } from 'meteor/service-configuration'
 import { fetch } from 'meteor/fetch'
 import { ProfilesCollection } from '/imports/db/ProfilesCollection'
+import { ObservationsCollection } from '/imports/db/ObservationsCollection'
 import { createForNetwork } from '/imports/both/networkTools'
 import '/imports/api/profilesPublications';
 import '/imports/api/observationsPublications';
@@ -90,6 +91,11 @@ Meteor.methods({
       console.error(err)
       return err
     }
+  },
+  async getObservationsData() {
+    const observations = ObservationsCollection.find({}).fetch()
+    const profiles = ProfilesCollection.find({}).fetch()
+    return await Promise.resolve({status: "OK"})
   }
 })
 
