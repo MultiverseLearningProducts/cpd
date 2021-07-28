@@ -62,6 +62,9 @@ html {
 .mv-white {
   color: var(--mv-white-dwarf);
 }
+.mv-electron {
+  color: var(--mv-electron);
+}
 .mv-supernova {
   color: var(--mv-supernova);
 }
@@ -197,12 +200,30 @@ h1::after {
 }
 #network-info-panel-main {
   height: 100%;
-  width: 200vw;
+  width: 100vw;
   display: grid;
   grid-template-columns: 100vw 100vw;
   left: 0;
   transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+#panel-1, #panel-2 {
+  width: 100vw;
+  left: 0;
+  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#panel-1.off-screen { 
+  left: -100vw;
+  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+#panel-2.off-screen { 
+  left: 100vw;
+  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.on-screen { 
+  left: 0;
+  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
 .profile-avatar {
   position: absolute;
   top: 0;
@@ -224,6 +245,21 @@ h1::after {
 #feedbacks-panel section {
   margin: 1rem auto;
   max-width: 48rem;
+}
+input[type="url"] {
+  outline: none;
+}
+input[type="url"]::placeholder {
+  font-size: 13px;
+  color: #b1b1b1;
+}
+.tag {
+  display: inline-block;
+  margin: 0 .25rem .25rem 0;
+  padding: .25rem .75rem .25rem .5rem;
+  border-radius: 3px;
+  background-color: var(--mv-molten);
+  color: var(--mv-white-dwarf);
 }
 @media screen and (min-width: 30em) {
   .network-loading::after {

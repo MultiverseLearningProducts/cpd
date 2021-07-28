@@ -6,7 +6,8 @@
     "prod": "METEOR_SETTINGS=$(cat settings.json) node main.js",
     "test": "meteor test --once --driver-package meteortesting:mocha",
     "test-app": "TEST_WATCH=1 meteor test --full-app --driver-package meteortesting:mocha",
-    "visualize": "meteor --production --extra-packages bundle-visualizer"
+    "visualize": "meteor --settings settings.json --production --extra-packages bundle-visualizer",
+    "tag": "docker tag multiverse-cpd_app bmordan/cpd && docker push bmordan/cpd"
   },
   "dependencies": {
     "@babel/runtime": "^7.11.2",

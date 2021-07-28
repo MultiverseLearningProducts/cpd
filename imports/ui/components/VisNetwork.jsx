@@ -2,12 +2,11 @@ import React, { useEffect, useState } from 'react'
 import { useMethod } from '../../both/useMethod'
 import VisNetworkReactComponent from 'vis-network-react'
 import { NetworkInfoPanel } from './NetworkInfoPanel'
-import { Grid } from 'react-css-spinners'
 
 export const VisNetwork = props => {
 	const { user } = props
 	const [networkRendered, setNetworkRendered] = useState(false)
-	const [selected, setSelected] = useState(undefined)
+	const [selected, setSelected] = useState(null)
 	const profiles = useMethod('getProfiles')
 	let network = undefined
 	

@@ -72,20 +72,22 @@ Meteor.methods({
       const headers = {'Authorization': `Bearer ${google.accessToken}`}
       const params = new URLSearchParams({
         q: '(obs)',
-        orderBy: 'updated',
+        singleEvents: true,
+        orderBy: 'startTime',
         showHiddenInvitations: true
       })
       const res = await fetch(`${url}?${params}`, {
         method: 'GET',
         headers
       })
+
       const data = await res.json()
+      if (data.error) throw data.error
+      
       console.info(`getGoogleCalEvents: ${data.items.length} obs for ${email}`)
-      data.items = data.items.sort((a, b) => {
-        return new Date(a.start.dateTime) < new Date(b.start.dateTime) ? -1 : 1
-      })
       return data
     } catch(err) {
+      console.error(err)
       return err
     }
   }

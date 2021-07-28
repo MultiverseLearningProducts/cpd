@@ -1,5 +1,53 @@
 import React from 'react'
 import { Left2RightArrow, TouchBarV } from './DecorativeElements'
+import parse from 'html-react-parser'
+
+export const ObsFeedbacks = props => {
+    const {
+        calEvt_date,
+        observer,
+        observed,
+        reflection,
+        feedback,
+        private_reflection,
+        private_feedback,
+        recordings_url,
+        tags,
+        feedbacks
+    } = props.observation
+    
+    const getFirstName = email => {
+        const name = email.split('.')[0]
+        return name[0].toUpperCase() + name.substring(1)
+    }
+    
+    if (!reflection && !feedback) return null
+    
+    return (
+        <article className="lh-copy mw6">
+            <i className="flex items-center mb3">
+                {new Date(calEvt_date).toLocaleString('en-gb')}
+                {recordings_url ? <a className="dib mh2" href={recordings_url} target="_blank">▶️</a> : null}
+                <hr className="flex-auto ml2 b--black"/>
+            </i>
+            <span className="flex items-center flex-wrap justify-start">{tags.map(t => <span key={t.value} className="tag">{t.label}</span>)}</span>
+            {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstName(observed.email)}'s reflection.</p>}
+            {private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
+            {feedback ? <i className="mt2">---{observer.email}--- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>}
+            {private_feedback ? <i className="o-80">{parse(private_feedback)}</i> : null}
+            {feedbacks.length ? <label className="db b i">Comments</label> : null}
+            {feedbacks.map(fb => (
+                <article key={fb.user._id}>
+                    <article className="flex justify-start items-center">
+                        <div className="br-100 flex-none feedback-panel-avatar" style={{ backgroundImage: `url('${fb.user.services.google.picture}')` }}></div>
+                        <small className="dib mh2 tr"><a href={`mailto:${fb.user.services.google.email}`}>{fb.user.profile.name}</a></small>
+                        {parse(fb.feedback)}
+                    </article>
+                </article>
+            ))}
+        </article>
+    )
+}
 
 export const ObsAvatars = props => {
     const { observer, observed } = props
@@ -33,9 +81,13 @@ export const ObsCard = props => {
         onSelected
     } = props
     const isPast = new Date(dateTime).getTime() <= new Date().getTime()
-    const findProfile = _email => props.profiles.nodes.find(p => p.data.email === _email)
+    const findProfile = _email => profiles.nodes.find(p => p.data.email === _email)
     const [attendeeObserver] = attendees.filter(att => !att.organizer)
-    if (!attendeeObserver) return null
+    if (!attendeeObserver) return (
+        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative">
+            Can't find attendee observer. Check <a href={htmlLink} target="_Blank">{summary}</a>.
+        </article>
+    )
     const observer = findProfile(attendeeObserver.email)
     const observed = findProfile(organizer.email)
     if (!observer || !observed) return null
@@ -64,6 +116,7 @@ export const ObsCard = props => {
 
 export const ObservationsPanel = props => {
     const { profiles, calEvents } = props
+    
     const futureEvents = calEvents.filter(calEvt => {
         if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
         return new Date(calEvt.start.dateTime).getTime() > new Date().getTime()

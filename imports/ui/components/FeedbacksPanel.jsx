@@ -18,6 +18,7 @@ class Observation {
             private_reflection: "",
             feedback: "",
             private_feedback: "",
+            recording_url: "",
             feedbacks: [],
             tags: []
         }, obs)
@@ -40,6 +41,7 @@ const Feedbacks = props => {
     if (!props.selectedObs) return null
     const [feedback, setFeedback] = useState("")
     const [privateFeedback, setPrivateFeedback] = useState("")
+    const [recordingURL, setRecordingURL] = useState("")
     const [tags, setTags] = useState([])
     const user = Meteor.user()
 
@@ -78,8 +80,9 @@ const Feedbacks = props => {
             },
             reflection: !first_feedback ? feedback : "",
             feedback: first_feedback ? first_feedback : "",
-            private_reflection: privateFeedback,
-            private_feedback: privateFeedback,
+            private_reflection: !first_feedback ? privateFeedback : "",
+            private_feedback: first_feedback ? privateFeedback : "",
+            recording_url: recordingURL,
             tags: tags
         })
         ObservationsCollection.insert(obs, (err) => {
@@ -117,6 +120,7 @@ const Feedbacks = props => {
         position: 'fixed',
         left: '8px',
         top: '50%',
+        zIndex: '10'
     }
 
     return (
@@ -141,6 +145,15 @@ const Feedbacks = props => {
             ) : null}
             {isObserved && !observation ? (
                 <section>
+                    <label className="dib mv2 tl w-100">Link to recording</label>
+                    <input 
+                        name="recording-url" 
+                        type="url" 
+                        defaultValue={recordingURL} 
+                        onChange={e => setRecordingURL(e.currentTarget.value)}
+                        className='pa2 mv2 tl w-100 se-placeholder'
+                        style={{border: 'solid 1px #dadada'}}
+                        placeholder="optional link to recording" />
                     <label className="dib mv2 tl w-100">Public reflection</label>
                     <Editor
                         name="reflection"
