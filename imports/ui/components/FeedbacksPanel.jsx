@@ -95,7 +95,7 @@ const Feedbacks = props => {
     const submitFeedback = () => {
         updateObservationsCollection({
             feedback: feedback,
-            private_feedback: private_feedback,
+            private_feedback: privateFeedback,
             tags: tags
         })
     }
