@@ -66,7 +66,7 @@ const Feedbacks = props => {
 
     const { observation } = props
 
-    const submitObservation = (first_feedback) => {
+    const submitObservation = () => {
         const obs = new Observation({
             calEvt_id: calEvt.id,
             calEvt_date: calEvt.start.dateTime,
@@ -78,21 +78,31 @@ const Feedbacks = props => {
                 email: observed.data.email,
                 avatar: observed.data.avatarUrl || observed.data.about.avatar
             },
-            reflection: !first_feedback ? feedback : "",
-            feedback: first_feedback ? first_feedback : "",
-            private_reflection: !first_feedback ? privateFeedback : "",
-            private_feedback: first_feedback ? privateFeedback : "",
+            reflection: feedback,
+            private_reflection: privateFeedback,
             recording_url: recordingURL,
-            tags: tags
         })
         ObservationsCollection.insert(obs, (err) => {
             if (err) {
                 console.error(`observation for ${calEvt.start.dateTime} already created`)
-                updateObservationsCollection({ reflection: feedback })
             } else {
                 setFeedback("")
                 setPrivateFeedback("")
             }
+        })
+    }
+
+    const submitFeedback = () => {
+        updateObservationsCollection({
+            feedback: feedback,
+            private_feedback: private_feedback,
+            tags: tags
+        })
+    }
+    
+    const submitComments = () => {
+        updateObservationsCollection({
+            feedbacks: [...observation.feedbacks, { feedback, user }]
         })
     }
 
@@ -101,12 +111,7 @@ const Feedbacks = props => {
             if (err) console.error(err)
             setFeedback("")
             setPrivateFeedback("")
-        })
-    }
-
-    const submitComments = () => {
-        updateObservationsCollection({
-            feedbacks: [...observation.feedbacks, { feedback, user }]
+            setTags([])
         })
     }
 
@@ -179,31 +184,12 @@ const Feedbacks = props => {
             ) : null}
             {isObserved && observation && !observation.feedback ? (
                 <section>
-                    <p>Waiting for {observer.data.firstName} to leave you feedback</p>
+                    <p>Waiting for {observer.data.firstName} to leave you feedback.</p>
                 </section>
             ) : null}
-            {isObserver && !observation ? (
+            {isObserver && (!observation || !observation.reflection) ? (
                 <section>
-                    <label className="dib mv2 tl w-100">Public feedback</label>
-                    <Editor
-                        name="first-feedback"
-                        defaultValue={feedback}
-                        onChange={setFeedback}
-                        placeholder={`${observed.data.firstName} has not left a reflection yet, but you can add your feedback now.`} />
-                    <div className="o-80">
-                        <label className="dib mv2 tl w-100">Private feedback</label>
-                        <Editor
-                            name="private-feedback"
-                            defaultValue={privateFeedback}
-                            onChange={setPrivateFeedback}
-                            placeholder="Your private feedback. Only you and your observer partner will ever see this." />
-                    </div>
-                    <section className="flex justify-end items-center">
-                        <CoachRubricTags onChange={setTags} />
-                        <button
-                            className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
-                            onClick={event => { event.stopPropagation(); submitObservation(feedback) }}> Feedback Now</button>
-                    </section>
+                    <p>Waiting for {observed.data.firstName} to write their reflection.</p>
                 </section>
             ) : null}
             {isObserver && observation && observation.reflection ? (
@@ -226,7 +212,7 @@ const Feedbacks = props => {
                         <CoachRubricTags onChange={setTags} />
                         <button
                             className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
-                            onClick={event => { event.stopPropagation(); submitObservation(feedback) }}>Add Feedback</button>
+                            onClick={event => { event.stopPropagation(); submitFeedback() }}>Add Feedback</button>
                     </section>
                 </section>
             ) : null}

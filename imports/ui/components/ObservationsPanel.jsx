@@ -1,5 +1,5 @@
 import React from 'react'
-import { Left2RightArrow, TouchBarV } from './DecorativeElements'
+import { Left2RightArrow, RightChevron } from './DecorativeElements'
 import parse from 'html-react-parser'
 
 export const ObsFeedbacks = props => {
@@ -12,6 +12,7 @@ export const ObsFeedbacks = props => {
         private_reflection,
         private_feedback,
         recordings_url,
+        focus,
         tags,
         feedbacks
     } = props.observation
@@ -30,7 +31,8 @@ export const ObsFeedbacks = props => {
                 {recordings_url ? <a className="dib mh2" href={recordings_url} target="_blank">▶️</a> : null}
                 <hr className="flex-auto ml2 b--black"/>
             </i>
-            <span className="flex items-center flex-wrap justify-start">{tags.map(t => <span key={t.value} className="tag">{t.label}</span>)}</span>
+            <span className="flex items-center flex-wrap justify-start">{tags.length ? tags.map(t => <span key={t.value} className="tag">{t.label}</span>) : "Not tagged"}</span>
+            {focus ? <blockquote className="b i">{parse(focus)}</blockquote> : null}
             {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstName(observed.email)}'s reflection.</p>}
             {private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
             {feedback ? <i className="mt2">---{observer.email}--- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>}
@@ -93,23 +95,25 @@ export const ObsCard = props => {
     if (!observer || !observed) return null
     const touchBarStyles = {
         position: 'absolute',
-        right: '8px',
-        top: '50%',
-        transform: 'translate(0,-50%)'
+        right: '.5rem',
+        top: '0',
+        bottom: '0'
     }
     return (
         <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative">
-            <ObsAvatars observer={observer} observed={observed} />
-            <div className="mt2">
-                <span>{observer && observer.data && observer.data.firstName} observing {observed && observed.data && observed.data.firstName}&nbsp;on&nbsp;</span>
+            <div className="mv2 tl">
+                <span>{observer && observer.data && observer.data.firstName} <Left2RightArrow width="28" height="16" /> {observed && observed.data && observed.data.firstName}&nbsp;on&nbsp;</span>
                 <time className="dib" dateTime={new Date(dateTime)}>{new Date(dateTime).toDateString()}&nbsp;at&nbsp;{new Date(dateTime).toLocaleTimeString().substring(0, 5)}</time>
                 <a className="link ml1" href={htmlLink} target="_Blank">📆</a>
+                {isPast ? (
+                    <nav 
+                        onClick={event => {event.stopPropagation(); onSelected({observer, observed, calEvt: props.calEvt})}} 
+                        style={touchBarStyles}
+                        className="flex items-center">
+                        <RightChevron />
+                    </nav>
+                ) : null}
             </div>
-            {isPast ? (
-                <nav onClick={event => {event.stopPropagation(); onSelected({observer, observed, calEvt: props.calEvt})}} style={touchBarStyles}>
-                    <TouchBarV />
-                </nav>
-            ) : null}
         </article>
     )
 }
@@ -127,24 +131,22 @@ export const ObservationsPanel = props => {
     })
 
     return (
-        <aside className="pa2 ml-auto mr-auto">
-            <h3 className="underline">Observations Booked</h3>
+        <aside className="pr2 br2">
             {futureEvents.length ? (
-                <section>
+                <section className="bg-mv-white-dwarf pa2 br2">
                     {futureEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
-                <p className="tl lh-copy measure">
-                    You have no observations booked yet. Why not reach out now and book an observation. Tag your Google calendar event with <span className="dib b">[obs]</span> and it will show up here.
+                <p className="bg-mv-white-dwarf tl lh-copy measure br2">
+                    You have no observations booked. Why not reach out now and invite another coach to come watch you. Tag your Google calendar event with <span className="dib b">(obs)</span> and it will show up here.
                 </p>
             )}
-            <h3 className="underline">Previous Observations</h3>
             {pastEvents.length ? (
-                <section>
+                <section className="bg-mv-white-dwarf pa2 br2">
                     {pastEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
-                <p className="tl lh-copy measure">
+                <p className="bg-mv-white-dwarf tl lh-copy measure br2">
                     You have no observations completed yet. When you do they will appear here. Then you will be promoted to leave a reflection, and for your observer to leave their feedback.
                 </p>
             )}

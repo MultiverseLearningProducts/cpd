@@ -59,7 +59,7 @@ export const NetworkInfo = props => {
     return (
         <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-scroll ${open ? 'open' : 'closed'}`}>
             <nav onClick={toggleOpen}><TouchBarH /></nav>
-            <header className="w-100 flex items-center tl">
+            <header className="w-100 flex items-center tl mb2">
                 <div className="flex-auto pa2 pr5 flex flex-column">
                     <h2 className="mv0">{displayName}</h2>
                     <h3 className="mv0">{title}</h3>

@@ -89,6 +89,7 @@ Meteor.methods({
       return data
     } catch(err) {
       console.error(err)
+
       return err
     }
   },
@@ -98,4 +99,8 @@ Meteor.methods({
     return await Promise.resolve({status: "OK"})
   }
 })
+
+const ids = ['LE2kL3Eh4BFWLSgfK', 'sQjMr7wmbx4jYuKAA', 'NCxbC7DLEYF2Xhg79', 'CLuX4cP94Qf8oxqoi', 'tGe5itSCYGggFk9H7']
+
+const text = "You gave a nicely structured introduction to OAuth, a tricky subject for those new to programming. I could see the way you used supportive slides again. Nice one, good prep. There was little interaction as you delivered the information. You and I have both wondered that this kind of session would work better as a video or async resource. It's ok to deliver, then assess. The video format for this kind of session would then enable you to spend the time you have with your apprentices talking to them and checking for understanding."
 
