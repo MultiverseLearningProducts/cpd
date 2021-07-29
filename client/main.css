@@ -68,6 +68,15 @@ html {
 .mv-supernova {
   color: var(--mv-supernova);
 }
+.mv-gray {
+  color: var(--mv-gray);
+}
+.mv-deep-space {
+  color: var(--mv-deep-space);
+}
+.mv-ultraviolet {
+  color: var(--mv-ultraviolet);
+}
 .bg-mv-molten {
   background-color: var(--mv-molten);
 }

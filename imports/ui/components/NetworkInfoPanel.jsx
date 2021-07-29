@@ -32,7 +32,8 @@ export const NetworkInfo = props => {
                 }
             }
         },
-        profiles
+        profiles,
+        observations
     } = props
 
     const toggleOpen = () => {
@@ -80,7 +81,13 @@ export const NetworkInfo = props => {
                             ) : null}
                         </div>
                     ) : null}
-                    {profiles ? <ObservationsPanel calEvents={calEvents} profiles={profiles} onSelected={onSelected} /> : null}
+                    {profiles ? (
+                        <ObservationsPanel 
+                            calEvents={calEvents} 
+                            profiles={profiles}
+                            observations={observations}
+                            onSelected={onSelected} />
+                    ) : null}
                 </section>
                 <section id="panel-2" className={`absolute ${selectedObs ? 'in-screen' : 'off-screen'}`} >
                     {selectedObs 

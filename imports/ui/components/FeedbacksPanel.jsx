@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { withTracker } from 'meteor/react-meteor-data'
 import parse from 'html-react-parser'
-import { ObsAvatars } from './ObservationsPanel'
+import { ObsAvatars, ObsFeedbacks } from './ObservationsPanel'
 import { TouchBarV } from './DecorativeElements'
 import { Editor } from './Editor'
 import { ObservationsCollection } from '../../db/ObservationsCollection'
@@ -115,12 +115,6 @@ const Feedbacks = props => {
         })
     }
 
-    const showPrivate = () => {
-        const {services: {google: { email }}} = user
-        return email === observer.data.email
-        || email === observed.data.email
-    }
-
     const touchBarStyles = {
         position: 'fixed',
         left: '8px',
@@ -133,19 +127,8 @@ const Feedbacks = props => {
             <nav style={touchBarStyles} onClick={event => { event.stopPropagation(); props.setSelectedObs(null) }}><TouchBarV /></nav>
             <ObsAvatars observer={observer} observed={observed} />
             {observation && (observation.reflection || observation.feedback) ? (
-                <section className="bg-mv-white-dwarf bg-lined-paper pl6 pv2 ma2 tl ml-auto mr-auto mw7 relative">
-                    {observation.reflection ? (
-                        <span>{parse(observed.data.firstName + observation.reflection)}</span>
-                    ) : null}
-                    {showPrivate && observation.private_reflection ? (
-                        <span className="o-80">{parse(observation.private_reflection)}</span>
-                    ) : null}
-                    {observation.feedback ? (
-                        <span className="i">{parse(observer.data.firstName + observation.feedback)}</span>
-                    ) : null}
-                    {showPrivate && observation.private_feedback ? (
-                        <span className="o-80">{parse(observation.private_feedback)}</span>
-                    ) : null}
+                <section className="bg-mv-white-dwarf bg-lined-paper pa4 tl">
+                    <ObsFeedbacks observation={observation} />
                 </section>
             ) : null}
             {isObserved && !observation ? (
@@ -192,7 +175,7 @@ const Feedbacks = props => {
                     <p>Waiting for {observed.data.firstName} to write their reflection.</p>
                 </section>
             ) : null}
-            {isObserver && observation && observation.reflection ? (
+            {isObserver && observation && observation.reflection && (!observation.feedback || !observation.private_feedback) ? (
                 <section>
                     <label className="dib mv2 tl w-100">Public feedback</label>
                     <Editor

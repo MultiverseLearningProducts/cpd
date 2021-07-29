@@ -12,11 +12,16 @@ export const ObsFeedbacks = props => {
         private_reflection,
         private_feedback,
         recordings_url,
-        focus,
         tags,
         feedbacks
     } = props.observation
     
+    const showPrivate = () => {
+        const {services: {google: { email }}} = Meteor.user()
+        return email === observer.email
+        || email === observed.email
+    }
+
     const getFirstName = email => {
         const name = email.split('.')[0]
         return name[0].toUpperCase() + name.substring(1)
@@ -32,17 +37,17 @@ export const ObsFeedbacks = props => {
                 <hr className="flex-auto ml2 b--black"/>
             </i>
             <span className="flex items-center flex-wrap justify-start">{tags.length ? tags.map(t => <span key={t.value} className="tag">{t.label}</span>) : "Not tagged"}</span>
-            {focus ? <blockquote className="b i">{parse(focus)}</blockquote> : null}
             {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstName(observed.email)}'s reflection.</p>}
-            {private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
-            {feedback ? <i className="mt2">---{observer.email}--- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>}
-            {private_feedback ? <i className="o-80">{parse(private_feedback)}</i> : null}
+            {showPrivate() && private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
+            {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}---- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>}
+            {showPrivate() && private_feedback ? <i className="o-80">{parse(private_feedback)}</i> : null}
+            {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}----</i> : null}
             {feedbacks.length ? <label className="db b i">Comments</label> : null}
             {feedbacks.map(fb => (
                 <article key={fb.user._id}>
                     <article className="flex justify-start items-center">
                         <div className="br-100 flex-none feedback-panel-avatar" style={{ backgroundImage: `url('${fb.user.services.google.picture}')` }}></div>
-                        <small className="dib mh2 tr"><a href={`mailto:${fb.user.services.google.email}`}>{fb.user.profile.name}</a></small>
+                        <small className="dib mh2 tr"><a className="mv-ultraviolet" href={`mailto:${fb.user.services.google.email}`}>{fb.user.profile.name}</a></small>
                         {parse(fb.feedback)}
                     </article>
                 </article>
@@ -77,11 +82,15 @@ export const ObsCard = props => {
             },
             htmlLink,
             attendees = [],
-            organizer
+            organizer,
+            observation
         },
         profiles,
         onSelected
     } = props
+
+    if (observation && observation.reflection && observation.feedback) return null
+    
     const isPast = new Date(dateTime).getTime() <= new Date().getTime()
     const findProfile = _email => profiles.nodes.find(p => p.data.email === _email)
     const [attendeeObserver] = attendees.filter(att => !att.organizer)
@@ -90,8 +99,10 @@ export const ObsCard = props => {
             Can't find attendee observer. Check <a href={htmlLink} target="_Blank">{summary}</a>.
         </article>
     )
+    
     const observer = findProfile(attendeeObserver.email)
     const observed = findProfile(organizer.email)
+
     if (!observer || !observed) return null
     const touchBarStyles = {
         position: 'absolute',
@@ -119,14 +130,15 @@ export const ObsCard = props => {
 }
 
 export const ObservationsPanel = props => {
-    const { profiles, calEvents } = props
+    const { profiles, calEvents, observations } = props
     
     const futureEvents = calEvents.filter(calEvt => {
         if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
         return new Date(calEvt.start.dateTime).getTime() > new Date().getTime()
     })
     const pastEvents = calEvents.filter(calEvt => {
-        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false
+        if (calEvt.recurringEventId || calEvt.status === 'cancelled') return false 
+        calEvt.observation = observations.find(obs => obs.calEvt_id === calEvt.id)
         return new Date(calEvt.start.dateTime).getTime() <= new Date().getTime()
     })
 
@@ -137,7 +149,7 @@ export const ObservationsPanel = props => {
                     {futureEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
-                <p className="bg-mv-white-dwarf tl lh-copy measure br2">
+                <p className="mt0 bg-mv-white-dwarf tl lh-copy br2 pa4">
                     You have no observations booked. Why not reach out now and invite another coach to come watch you. Tag your Google calendar event with <span className="dib b">(obs)</span> and it will show up here.
                 </p>
             )}
@@ -146,7 +158,7 @@ export const ObservationsPanel = props => {
                     {pastEvents.map(calEvt => <ObsCard key={calEvt.id} calEvt={calEvt} profiles={profiles} onSelected={props.onSelected} />)}
                 </section>
             ) : (
-                <p className="bg-mv-white-dwarf tl lh-copy measure br2">
+                <p className="mt0 bg-mv-white-dwarf tl lh-copy br2 pa4">
                     You have no observations completed yet. When you do they will appear here. Then you will be promoted to leave a reflection, and for your observer to leave their feedback.
                 </p>
             )}
