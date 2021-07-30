@@ -111,6 +111,7 @@ const Feedbacks = props => {
             if (err) console.error(err)
             setFeedback("")
             setPrivateFeedback("")
+            setRecordingURL("")
             setTags([])
         })
     }

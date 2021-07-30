@@ -51,6 +51,11 @@ export const VisNetwork = props => {
 		border: "solid 0px transparent"
 	}
 
+	const initialData = {
+		nodes: profiles.data.nodes,
+		edges: []
+	}
+
 	const getNetwork = _network => {
 		const initNetwork = () => {
 			_network.off(initNetwork)
@@ -60,8 +65,13 @@ export const VisNetwork = props => {
 				if (_selected) {
 					setSelected(_selected)
 					network.setSelection({nodes: [_selected.id]})
-					network.focus(_selected.id, {scale: 0.8})
 					setNetworkRendered(true)
+					Meteor.setTimeout(() => {
+						for (edge of profiles.data.edges) {
+							network.body.data.edges.add(edge)
+						}
+						Meteor.setTimeout(() => network.focus(_selected.id, {scale: 0.8}), 1800)
+					}, 0)
 				}
 			}
 		}
@@ -70,7 +80,7 @@ export const VisNetwork = props => {
 
 	return (
 		<section id="network-graph" className={`relative ${networkRendered ? '' : 'network-loading spinner'}`}>
-			<VisNetworkReactComponent style={style} events={events} data={profiles.data} options={networkOptions} getNetwork={getNetwork} />
+			<VisNetworkReactComponent style={style} events={events} data={initialData} options={networkOptions} getNetwork={getNetwork} />
 			{selected ? <NetworkInfoPanel selected={selected} profiles={profiles.data} /> : null}
 		</section>
 	)

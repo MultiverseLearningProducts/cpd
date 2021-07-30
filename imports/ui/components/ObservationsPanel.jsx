@@ -39,10 +39,10 @@ export const ObsFeedbacks = props => {
             <span className="flex items-center flex-wrap justify-start">{tags.length ? tags.map(t => <span key={t.value} className="tag">{t.label}</span>) : "Not tagged"}</span>
             {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstName(observed.email)}'s reflection.</p>}
             {showPrivate() && private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
-            {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}---- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>}
-            {showPrivate() && private_feedback ? <i className="o-80">{parse(private_feedback)}</i> : null}
+            {/* {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}---- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>} */}
+            {showPrivate() && private_feedback ? <i className="o-80 mv-ultraviolet">{parse(private_feedback)}</i> : null}
             {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}----</i> : null}
-            {feedbacks.length ? <label className="db b i">Comments</label> : null}
+            {feedbacks.length ? <label className="db b i mt2">Comments</label> : null}
             {feedbacks.map(fb => (
                 <article key={fb.user._id}>
                     <article className="flex justify-start items-center">
@@ -95,7 +95,7 @@ export const ObsCard = props => {
     const findProfile = _email => profiles.nodes.find(p => p.data.email === _email)
     const [attendeeObserver] = attendees.filter(att => !att.organizer)
     if (!attendeeObserver) return (
-        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative">
+        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative tl">
             Can't find attendee observer. Check <a href={htmlLink} target="_Blank">{summary}</a>.
         </article>
     )
