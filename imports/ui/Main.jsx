@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GoogleUser } from './components/GoogleUser'
 import { useCurrentUser } from 'react-meteor-hooks'
 import { AccountsReactComponent } from 'meteor/gwened:meteor-accounts-react'
-import { VisNetwork } from './components/VisNetwork'
 import { version } from '/package.json'
+import { MainContainer } from './MainContainer'
 
 export const Main = (props) => {
   const user = useCurrentUser()
@@ -24,7 +24,7 @@ export const Main = (props) => {
           <span className="dib mv-white mr2">v{version}</span>
           <GoogleUser user={user} />
         </header>
-        <VisNetwork user={user} />
+        <MainContainer user={user} />
       </section>
     ) 
   } else {

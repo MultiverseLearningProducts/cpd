@@ -1,31 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import { useMethod } from '../../both/useMethod'
+import React from 'react'
 import VisNetworkReactComponent from 'vis-network-react'
-import { NetworkInfoPanel } from './NetworkInfoPanel'
 
-export const VisNetwork = props => {
-	const { user } = props
-	const [networkRendered, setNetworkRendered] = useState(false)
-	const [selected, setSelected] = useState(null)
-	const profiles = useMethod('getProfiles')
-	let network = undefined
-	
-	useEffect(() => {
-		profiles.call()
-	}, [])
-
-	if (!profiles.data) return <div>Fetching data...</div>
-	if (profiles.isLoading) return <div>Loading data...</div>
+export const VisNetwork = React.memo(props => {
+	const { onSelect, data, setNetwork } = props
 
 	const events = {
 		click: function (params) {
-			params.event = "[original event]";
-			const id = this.getNodeAt(params.pointer.DOM)
-			const _selected = profiles.data.nodes.find(n => n.id === id)
-			setSelected(_selected)
-		},
-		selectNode: function (params) {
-			const [id] = params.nodes
+			params.event = "[original event]"; 
+			onSelect(this.getNodeAt(params.pointer.DOM))
 		}
 	}
 
@@ -51,37 +33,32 @@ export const VisNetwork = props => {
 		border: "solid 0px transparent"
 	}
 
-	const initialData = {
-		nodes: profiles.data.nodes,
-		edges: []
-	}
-
 	const getNetwork = _network => {
 		const initNetwork = () => {
 			_network.off(initNetwork)
-			if (!network) {
-				network = _network
-				const _selected = profiles.data.nodes.find(n => n.data.email === user.services.google.email)
-				if (_selected) {
-					setSelected(_selected)
-					network.setSelection({nodes: [_selected.id]})
-					setNetworkRendered(true)
-					Meteor.setTimeout(() => {
-						for (edge of profiles.data.edges) {
-							network.body.data.edges.add(edge)
-						}
-						Meteor.setTimeout(() => network.focus(_selected.id, {scale: 0.8}), 1800)
-					}, 0)
+			setNetwork(_network)
+			Meteor.setTimeout(() => {
+				for (edge of data.edges) {
+					try {
+						_network.body.data.edges.add(edge)
+					} catch(err) {}
 				}
-			}
+				// Meteor.setTimeout(() => network.focus(_selected.id, {scale: 0.8}), 1800)
+			}, 0)
 		}
 		_network.on('afterDrawing', initNetwork)
 	}
-
+	console.log('network-render')
 	return (
-		<section id="network-graph" className={`relative ${networkRendered ? '' : 'network-loading spinner'}`}>
-			<VisNetworkReactComponent style={style} events={events} data={initialData} options={networkOptions} getNetwork={getNetwork} />
-			{selected ? <NetworkInfoPanel selected={selected} profiles={profiles.data} /> : null}
+		<section id="network-graph" className={`relative ${data ? '' : 'network-loading spinner'}`}>
+			<VisNetworkReactComponent 
+				style={style} 
+				events={events} 
+				data={{ nodes: data.nodes, edges: [] }} 
+				options={networkOptions} 
+				getNetwork={getNetwork} />
 		</section>
 	)
-}
+}, (oldProps, newProps) => {
+	return newProps.data && oldProps.data.nodes.length === newProps.data.nodes.length
+})
