@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { withTracker } from 'meteor/react-meteor-data'
 import parse from 'html-react-parser'
 import { ObsAvatars, ObsFeedbacks } from './ObservationsPanel'
-import { TouchBarV } from './DecorativeElements'
+import { HexBut } from './DecorativeElements'
 import { Editor } from './Editor'
 import { ObservationsCollection } from '../../db/ObservationsCollection'
 import { CoachRubricTags } from './CoachRubricTags'
@@ -14,6 +14,7 @@ class Observation {
             calEvt_date: null,
             observer: null,
             observed: null,
+            obsType: 1,
             reflection: "",
             private_reflection: "",
             feedback: "",
@@ -37,11 +38,23 @@ const Feedback = ({ HTMLcontent, email, avatar }) => {
     )
 }
 
+const EvtSummary = props => {
+    const {
+        start: {
+            dateTime
+        },
+        htmlLink,
+        summary
+    } = props.calEvt
+    return <a className="dib mt2" href={htmlLink} target="_Blank">{summary}<br></br>{new Date(dateTime).toLocaleString()} 📆</a>
+}
+
 const Feedbacks = props => {
     if (!props.selectedObs) return null
     const [feedback, setFeedback] = useState("")
     const [privateFeedback, setPrivateFeedback] = useState("")
     const [recordingURL, setRecordingURL] = useState("")
+    const [obsType, setObsType] = useState("")
     const [tags, setTags] = useState([])
     const user = Meteor.user()
 
@@ -78,6 +91,7 @@ const Feedbacks = props => {
                 email: observed.data.email,
                 avatar: observed.data.avatarUrl || observed.data.about.avatar
             },
+            obsType: obsType,
             reflection: feedback,
             private_reflection: privateFeedback,
             recording_url: recordingURL,
@@ -112,6 +126,7 @@ const Feedbacks = props => {
             setFeedback("")
             setPrivateFeedback("")
             setRecordingURL("")
+            setObsType(1)
             setTags([])
         })
     }
@@ -125,8 +140,9 @@ const Feedbacks = props => {
 
     return (
         <article id="feedbacks-panel" className="pa2 pt4">
-            <nav style={touchBarStyles} onClick={event => { event.stopPropagation(); props.setSelectedObs(null) }}><TouchBarV /></nav>
+            <nav style={touchBarStyles} onClick={event => { event.stopPropagation(); props.setSelectedObs(null) }}><HexBut dir='left' /></nav>
             <ObsAvatars observer={observer} observed={observed} />
+            <EvtSummary calEvt={calEvt} />
             {observation && (observation.reflection || observation.feedback) ? (
                 <section className="bg-mv-white-dwarf bg-lined-paper pa4 tl">
                     <ObsFeedbacks observation={observation} />
@@ -134,15 +150,28 @@ const Feedbacks = props => {
             ) : null}
             {isObserved && !observation ? (
                 <section>
-                    <label className="dib mv2 tl w-100">Link to recording</label>
-                    <input 
-                        name="recording-url" 
-                        type="url" 
-                        defaultValue={recordingURL} 
-                        onChange={e => setRecordingURL(e.currentTarget.value)}
-                        className='pa2 mv2 tl w-100 se-placeholder'
-                        style={{border: 'solid 1px #dadada'}}
-                        placeholder="optional link to recording" />
+                    <div className="flex">
+                        <div className="flex-auto pr3">
+                            <label className="dib mv2 tl w-100">Link to recording</label>
+                            <input 
+                                name="recording-url" 
+                                type="url" 
+                                defaultValue={recordingURL} 
+                                onChange={e => setRecordingURL(e.currentTarget.value)}
+                                className='pa2 mv2 tl w-100 se-placeholder'
+                                style={{border: 'solid 1px #dadada'}}
+                                placeholder="optional link to recording" />
+                        </div>
+                        <div className="flex-none">
+                            <label className="dib mv2 tl w-100">Type of observation</label>
+                            <select name="obsType" className="select-css mv2">
+                                <option value="1">1:1 Coaching</option>
+                                <option value="2">Delivery</option>
+                                <option value="3">Group Coaching</option>
+                                <option value="4">Progress Review</option>
+                            </select>
+                        </div>
+                    </div>
                     <label className="dib mv2 tl w-100">Public reflection</label>
                     <Editor
                         name="reflection"

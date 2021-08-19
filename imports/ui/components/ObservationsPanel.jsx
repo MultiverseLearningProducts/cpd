@@ -1,5 +1,5 @@
 import React from 'react'
-import { Left2RightArrow, RightChevron } from './DecorativeElements'
+import { Left2RightArrow, HexBut } from './DecorativeElements'
 import parse from 'html-react-parser'
 
 export const ObsFeedbacks = props => {
@@ -104,24 +104,16 @@ export const ObsCard = props => {
     const observed = findProfile(organizer.email)
 
     if (!observer || !observed) return null
-    const touchBarStyles = {
-        position: 'absolute',
-        right: '.5rem',
-        top: '0',
-        bottom: '0'
-    }
+
     return (
-        <article className="ba b--light-silver br2 pa2 mb2 bg-mv-white-dwarf relative">
+        <article className="ba b--light-silver br2 pa2 mb2 mr3 bg-mv-white-dwarf relative">
             <div className="mv2 tl">
                 <span>{observer && observer.data && observer.data.firstName} <Left2RightArrow width="28" height="16" /> {observed && observed.data && observed.data.firstName}&nbsp;on&nbsp;</span>
                 <time className="dib" dateTime={new Date(dateTime)}>{new Date(dateTime).toDateString()}&nbsp;at&nbsp;{new Date(dateTime).toLocaleTimeString().substring(0, 5)}</time>
-                <a className="link ml1" href={htmlLink} target="_Blank">📆</a>
+                <a className="link ml1 dib" href={htmlLink} target="_Blank">📆</a>
                 {isPast ? (
-                    <nav 
-                        onClick={event => {event.stopPropagation(); onSelected({observer, observed, calEvt: props.calEvt})}} 
-                        style={touchBarStyles}
-                        className="flex items-center">
-                        <RightChevron />
+                    <nav className='dib absolute right-0' style={{top: '50%', transform: 'translate(19px,-16px)'}} onClick={event => {event.stopPropagation(); onSelected({observer, observed, calEvt: props.calEvt})}}>
+                        <HexBut dir='right' width='37' height='32' />
                     </nav>
                 ) : null}
             </div>

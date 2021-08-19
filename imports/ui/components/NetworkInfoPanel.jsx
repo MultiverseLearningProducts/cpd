@@ -4,7 +4,7 @@ import { useMethod } from '../../both/useMethod'
 import { ObservationsPanel, ObsFeedbacks } from './ObservationsPanel'
 import { RadarChart } from './RadarChart'
 import { FeedbacksPanel } from './FeedbacksPanel'
-import { TouchBarH } from './DecorativeElements'
+import { HexBut } from './DecorativeElements'
 import { ObservationsCollection } from '../../db/ObservationsCollection'
 
 export const NetworkInfo = props => {
@@ -58,8 +58,8 @@ export const NetworkInfo = props => {
     }
 
     return (
-        <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-scroll ${open ? 'open' : 'closed'}`}>
-            <nav onClick={toggleOpen}><TouchBarH /></nav>
+        <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-visible ${open ? 'open' : 'closed'}`}>
+            <nav onClick={toggleOpen} className='hex-but-pull-up'><HexBut dir={open ? 'down' : 'up'} /></nav>
             <header className="w-100 flex items-center tl mb2">
                 <div className="flex-auto pa2 pr5 flex flex-column">
                     <h2 className="mv0">{displayName}</h2>
