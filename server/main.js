@@ -11,6 +11,7 @@ import '/imports/api/usersPublications';
 import { googlePermissions } from '/imports/both/googlePermissions'
 import { SQLDatabase, Staff, Tag, Observation, ObservationTags } from '/imports/api/sqlExport'
 import { coachingRubric } from '/imports/both/coaching-rubric'
+import crypto from 'crypto'
 
 ServiceConfiguration.configurations.upsert(
     { service: "google" },
@@ -104,6 +105,12 @@ Meteor.methods({
     observations.forEach(ob => { new Observation(ob); new ObservationTags(ob) })
     
     const sql_database = new SQLDatabase([Staff, Tag, Observation, ObservationTags])
-    return sql_database.create_statement
+    
+    const { clientKey, clientSecret } = Meteor.settings
+    const iv = Buffer.from(clientSecret.toString('hex'), 'hex')
+    const cipher = crypto.createCipheriv('aes-256-ctr', Buffer.from(clientKey, 'utf8'), iv)
+    let encrypted = cipher.update(sql_database.statement)
+    encrypted = Buffer.concat([encrypted, cipher.final()])
+    return encrypted.toString('hex')
   }
 })

@@ -4,7 +4,7 @@ export class SQLDatabase {
             'DROP DATABASE IF EXISTS cpd_observations',
             `CREATE DATABASE cpd_observations;\\c cpd_observations`,
         ].join(';')
-        this.create_statement = `${create_db}\n${tables.map(t => t.create + t.inserts.join(';\n')).join(';\n')};`
+        this.statement = `${create_db}\n${tables.map(t => t.create + t.inserts.join(';\n')).join(';\n')};`
     }
 }
 
