@@ -9,6 +9,8 @@ import '/imports/api/profilesPublications';
 import '/imports/api/observationsPublications';
 import '/imports/api/usersPublications';
 import { googlePermissions } from '/imports/both/googlePermissions'
+import { SQLDatabase, Staff, Tag, Observation, ObservationTags } from '/imports/api/sqlExport'
+import { coachingRubric } from '/imports/both/coaching-rubric'
 
 ServiceConfiguration.configurations.upsert(
     { service: "google" },
@@ -96,6 +98,12 @@ Meteor.methods({
   async getObservationsData() {
     const observations = ObservationsCollection.find({}).fetch()
     const profiles = ProfilesCollection.find({}).fetch()
-    return await Promise.resolve({status: "OK"})
+    
+    profiles.forEach(profile => new Staff(profile))
+    coachingRubric.forEach(tag => new Tag(tag))
+    observations.forEach(ob => { new Observation(ob); new ObservationTags(ob) })
+    
+    const sql_database = new SQLDatabase([Staff, Tag, Observation, ObservationTags])
+    return sql_database.create_statement
   }
 })
