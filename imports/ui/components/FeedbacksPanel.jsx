@@ -14,7 +14,7 @@ class Observation {
             calEvt_date: null,
             observer: null,
             observed: null,
-            obsType: 1,
+            obs_type: 1,
             reflection: "",
             private_reflection: "",
             feedback: "",
@@ -91,7 +91,7 @@ const Feedbacks = props => {
                 email: observed.data.email,
                 avatar: observed.data.avatarUrl || observed.data.about.avatar
             },
-            obsType: obsType,
+            obs_type: obsType,
             reflection: feedback,
             private_reflection: privateFeedback,
             recording_url: recordingURL,
