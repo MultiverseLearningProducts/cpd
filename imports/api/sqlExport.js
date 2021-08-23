@@ -1,3 +1,5 @@
+const btoa = require('btoa')
+
 export class SQLDatabase {
     constructor(tables) {
         const create_db = [
@@ -64,8 +66,8 @@ export class Observation {
             '${observer.email}',
             '${observed.email}',
             ${obs_type || 1},
-            '${encodeURIComponent(reflection)}',
-            '${encodeURIComponent(feedback)}',
+            '${btoa(reflection)}',
+            '${btoa(feedback)}',
             '${recording_url}'
         )`
         this.constructor.inserts.push(statement)
