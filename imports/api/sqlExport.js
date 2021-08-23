@@ -64,8 +64,8 @@ export class Observation {
             '${observer.email}',
             '${observed.email}',
             ${obs_type || 1},
-            '${reflection}',
-            '${feedback}',
+            '${Buffer.from(reflection, 'base64')}',
+            '${Buffer.from(feedback, 'base64')}',
             '${recording_url}'
         )`
         this.constructor.inserts.push(statement)
