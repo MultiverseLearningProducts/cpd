@@ -1,36 +1,33 @@
 @startuml
 left to right direction
-entity teamleads {
+entity staff {
     id
-    fullName
     email
-}
-entity coaches {
-    id
-    fullName
-    email
-    teamlead_id
-}
-entity observations {
-    id
-    observer_email
-    observed_email
-    date
-    reflection
-    feedback
+    displayName
 }
 entity tags {
     id
     value
     label
 }
-entity observations_tags {
-    id
-    tag_id
-    observation_id
+entity observations {
+    id : pk
+    _id : mongoDB_id
+    date : ISO
+    observer : email
+    observed : email
+    type : integer
+    reflection : base64 encoded HTML
+    feedback : base64 encoded HTML
+    recording_url : URL to zoom recording
 }
-teamleads::id---{coaches::teamlead_id
-coaches::email---{observations::observed_email
-observations::id}---{observations_tags::observation_id
-observations_tags::tag_id}--{tags::id
+entity observations_tags {
+    id : pk
+    email : observed - for grouping easily
+    tag : slug
+    observation_id : mongoDB_id
+}
+staff::email---{observations::observed
+observations::_id---{observations_tags::observation_id
+observations_tags::tag---{tags::value
 @enduml

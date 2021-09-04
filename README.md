@@ -8,11 +8,11 @@ This is a Meteor app so get it going with:
 npm start
 ```
 
-You'll need secrets.
+You'll need secrets (ask the team).
 
 ## Data for Aircury
 
-![data model](https://user-images.githubusercontent.com/4499581/127390296-3965da45-ee5e-4c53-b95b-03fc672e8d55.png)
+![data model](https://user-images.githubusercontent.com/4499581/130585823-441c49aa-bb4d-4ea5-bca0-95bfaa9b3440.png)
 
 connect via a 3rd party DDP client like this
 
@@ -34,4 +34,4 @@ DDP.on('connected', async () => {
     DDP.disconnect().then(process.exit)
 })
 ```
-You'll get the data dump ready for ingesting into a SQL db
+You'll get the data dump ready for ingesting into a SQL db. More details in this repo [cpd-sample-client](https://github.com/MultiverseLearningProducts/cpd-sample-client)
