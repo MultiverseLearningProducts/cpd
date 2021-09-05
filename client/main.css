@@ -45,6 +45,7 @@ html {
   background-position: top center;
   background-size: 100% auto;
   background-repeat: repeat-y;
+  color: var(--mv-deep-space);
 }
 :root {
   --mv-ultraviolet: #4d61f4;
@@ -86,12 +87,16 @@ html {
 .bg-mv-white-dwarf {
   background-color: var(--mv-white-dwarf);
 }
+.bg-mv-electron {
+  background-color: var(--mv-electron);
+}
 .b--mv-aurora {
   border-color: var(--mv-aurora);
 }
 .b--mv-ultraviolet {
   border-color: var(--mv-ultraviolet);
 }
+
 h1,
 h2,
 h3,

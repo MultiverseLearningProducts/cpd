@@ -1,17 +1,14 @@
 import React from 'react'
+import { PreviewObservations } from './ObservationsPreview'
 
-export const PreviewPanel = ({previewPanel, setPreviewPanel}) => {
-    const glimmer = {
-        isGlimmer: true,
-        heading: '✦✦✦✦✦'
-    }
-    const {
-        isGlimmer = false,
-        heading
-    } = previewPanel ? previewPanel : glimmer
+export const PreviewPanel = props => {
+    const { previewPanel } = props
+    const heading = previewPanel ? previewPanel.heading : '✦✦✦✦✦'
     return (
-        <section id="preview-panel" style={{left: isGlimmer ? '-28rem' : '-2px'}}>
-            <h1>{heading}</h1>
+        <section id="preview-panel" style={{left: !previewPanel ? '-28rem' : '-2px'}} className="overflow-scroll pb2">
+            <h1 className="mt0 mb2">{heading}</h1>
+            {heading === 'Observations' ? <PreviewObservations {...props} /> : null}
         </section>
     )
 }
+
