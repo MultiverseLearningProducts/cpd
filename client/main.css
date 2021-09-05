@@ -245,7 +245,7 @@ input[type="url"]::placeholder {
   transition: left 1s;
 }
 #control-panel .control-panel-avatar {
-  background-color: #ffe352;
+  background-color: var(--mv-gray);
   background-size: cover;
   background-position: center center;
   height: 11rem;
@@ -278,6 +278,26 @@ input[type="url"]::placeholder {
   width: 24rem;
   height: calc(100vh - 24rem);
   transition: left 1s;  
+}
+#search {
+  background-color: rgba(244,244,244,0.25);
+  backdrop-filter: blur(5px);
+  top: 0;
+  right: 0;
+  padding: .5rem .6rem;
+  border-radius: 0 0 0 .5rem;
+  z-index:10;
+  width: 18rem;
+}
+#search .search-icon {
+  position: absolute;
+  top: .6rem;
+  right: 0.5rem;
+}
+.suggestion:hover {
+  background-color: #64abff;
+  opacity: 1;
+  color: white;
 }
 
 @media screen and (min-width: 30em) {

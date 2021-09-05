@@ -3,7 +3,7 @@ import React from 'react'
 export const PreviewPanel = ({previewPanel, setPreviewPanel}) => {
     const glimmer = {
         isGlimmer: true,
-        heading: '✦✦✦✦✦✦✦'
+        heading: '✦✦✦✦✦'
     }
     const {
         isGlimmer = false,

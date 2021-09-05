@@ -1,17 +1,16 @@
 import React from 'react'
-import { propTypes } from 'react-addons-pure-render-mixin'
 import { CalIcon, JournalIcon, TargetIcon } from './Icons'
 
 export const ControlPanel = ({selected, setPreviewPanel}) => {
     const glimmer = {
         isGlimmer: true,
         avatarUrl: '',
-        displayName: '✦✦✦✦✦✦✦',
+        displayName: '✦✦✦✦✦',
         about: {
             avatar: null
         },
         work: {
-            title: '✦✦✦✦✦✦✦'
+            title: '✦✦✦✦✦'
         }
     }
     const data = selected ? selected.data : glimmer
