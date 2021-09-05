@@ -21,9 +21,7 @@ export const MainContainer = ({user}) => {
     }, [])
 
     useEffect(() => {
-        if (!selected) {
-            setPreviewPanel(null)
-        }
+        setPreviewPanel(null)
     }, [selected])
 
     useEffect(() => {

@@ -5,13 +5,13 @@ import { CalIcon, JournalIcon, TargetIcon } from './Icons'
 export const ControlPanel = ({selected, setPreviewPanel}) => {
     const glimmer = {
         isGlimmer: true,
-        avatarUrl: 'radial-gradient(hotpink, blue)',
-        displayName: 'Not selected',
+        avatarUrl: '',
+        displayName: '✦✦✦✦✦✦✦',
         about: {
             avatar: null
         },
         work: {
-            title: 'Click on someone in the network'
+            title: '✦✦✦✦✦✦✦'
         }
     }
     const data = selected ? selected.data : glimmer
@@ -26,6 +26,12 @@ export const ControlPanel = ({selected, setPreviewPanel}) => {
             title
         }
     } = data
+    const loadPanelFor = heading => {
+        setPreviewPanel({
+            heading: heading,
+            user: selected
+        })
+    }
     return (
         <section id="control-panel" style={{left: isGlimmer ? '-28rem' : '-2px'}}>
             <header>
@@ -37,9 +43,9 @@ export const ControlPanel = ({selected, setPreviewPanel}) => {
             </main>
             <footer>
                 <nav>
-                    <div onClick={() => setPreviewPanel('Journal')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><JournalIcon /></div>
-                    <div onClick={() => setPreviewPanel('Stats')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><TargetIcon /></div>
-                    <div onClick={() => setPreviewPanel('Observations')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><CalIcon /></div>
+                    <div onClick={() => loadPanelFor('Journal')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><JournalIcon /></div>
+                    <div onClick={() => loadPanelFor('Stats')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><TargetIcon /></div>
+                    <div onClick={() => loadPanelFor('Observations')} className="relative bg-mv-white-dwarf pa1 br3 shadow-3 mv-hover-underline"><CalIcon /></div>
                 </nav>
             </footer>
         </section>
