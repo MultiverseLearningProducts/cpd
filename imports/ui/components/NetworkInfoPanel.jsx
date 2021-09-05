@@ -58,7 +58,7 @@ export const NetworkInfo = props => {
     }
 
     return (
-        <aside id="network-info-panel" className={`tc bg-mv-supernova overflow-visible ${open ? 'open' : 'closed'}`}>
+        <aside id="network-info-panel" className={`tc overflow-visible ${open ? 'open' : 'closed'}`}>
             <nav onClick={toggleOpen} className='hex-but-pull-up'><HexBut dir={open ? 'down' : 'up'} /></nav>
             <header className="w-100 flex items-center tl mb2">
                 <div className="flex-auto pa2 pr5 flex flex-column">

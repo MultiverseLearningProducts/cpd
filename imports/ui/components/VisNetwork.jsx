@@ -24,12 +24,13 @@ export const VisNetwork = React.memo(props => {
 
 	const style = {
 		position: 'relative',
-		height: `85vh`,
-		width: `100%`,
+		height: `calc(100vh - 5vh)`,
+		width: `100vw`,
 		maxWidth: "100%",
 		minWidth: "30%",
-		backgroundColor: "#c8c8d5",
-		margin: "1rem auto 0",
+		backgroundColor: "rgba(200,200,213,0.75)",
+		backdropFilter: "blur(7px)",
+		margin: "0",
 		border: "solid 0px transparent"
 	}
 
@@ -43,12 +44,10 @@ export const VisNetwork = React.memo(props => {
 						_network.body.data.edges.add(edge)
 					} catch(err) {}
 				}
-				// Meteor.setTimeout(() => network.focus(_selected.id, {scale: 0.8}), 1800)
 			}, 0)
 		}
 		_network.on('afterDrawing', initNetwork)
 	}
-	console.log('network-render')
 	return (
 		<section id="network-graph" className={`relative ${data ? '' : 'network-loading spinner'}`}>
 			<VisNetworkReactComponent 

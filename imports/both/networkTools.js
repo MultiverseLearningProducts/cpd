@@ -8,10 +8,11 @@ class Node {
             border: '#4d61f4',
             background: '#64abff',
             highlight: {
-                border: '#59d8a1'
+                border: '#FFE352',
+                background: '#ffe352'
             },
             hover: {
-                background: '#59d8a1'
+                background: '#ffe352'
             }
         }
         this.font = {
@@ -21,10 +22,6 @@ class Node {
             align: 'center'
         }
         this.shape = 'hexagon'
-        // this.image = {
-        //     unselected: employee.avatarUrl,
-        //     selected: employee.avatarUrl
-        // },
         this.imagePadding = {
             left:0,
             top:0,
@@ -56,7 +53,8 @@ export function createForNetwork (data) {
                 'kristina.raissi@multiverse.io',
                 'sean.landes@multiverse.io',
                 'greg.west@multiverse.io',
-                'jacqueline.chan@multiverse.io'
+                'jacqueline.chan@multiverse.io',
+                'nejmi.alexander@multiverse.io'
             ]
             const isCoach = employee.data.work.title.toLowerCase().includes('coach')
             || hasCoachRole.includes(employee.data.email)

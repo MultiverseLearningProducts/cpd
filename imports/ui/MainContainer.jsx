@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { VisNetwork } from './components/VisNetwork'
-import { NetworkInfoPanel } from './components/NetworkInfoPanel'
 import { useMethod } from '../both/useMethod';
+import { ControlPanel } from './components/ControlPanel';
+import { PreviewPanel } from './components/PreviewPanel';
 
 export const MainContainer = ({user}) => {
     const profiles = useMethod('getProfiles')
     const [selected, setSelected] = useState(null)
     const [network, setNetwork] = useState(null)
+    const [previewPanel, setPreviewPanel] = useState(null)
     
     const onSelect = id => {
         if (!profiles.data) return
@@ -19,6 +21,12 @@ export const MainContainer = ({user}) => {
     }, [])
 
     useEffect(() => {
+        if (!selected) {
+            setPreviewPanel(null)
+        }
+    }, [selected])
+
+    useEffect(() => {
         if (!network || !profiles.data) return
         const profile = profiles.data.nodes.find(p => p.data.email === user.services.google.email)
         network.setSelection({nodes: [profile.id]})
@@ -29,9 +37,10 @@ export const MainContainer = ({user}) => {
     }, [network])
 
     return (
-        <main>
+        <main id="main-container">
             {profiles.data ? <VisNetwork onSelect={onSelect} data={profiles.data} setNetwork={setNetwork} /> : null}
-            {selected ? <NetworkInfoPanel selected={selected} profiles={profiles.data} /> : null}
+            <ControlPanel selected={selected} setPreviewPanel={setPreviewPanel} />
+            <PreviewPanel previewPanel={previewPanel} setPreviewPanel={setPreviewPanel} />
         </main>
     )
 }

@@ -99,36 +99,6 @@ h4 {
   font-family: "TimesNRMTPro-Cond";
 }
 
-h1 {
-  margin-block-start: 0;
-  margin-block-end: -3rem;
-}
-
-h1::before {
-  content: "";
-  display: block;
-  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/mv_supernova_tada.svg");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  height: 5rem;
-  width: 5rem;
-  position: relative;
-  top: 2.5rem;
-  left: -3rem;
-}
-
-h1::after {
-  content: "";
-  display: block;
-  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/mv_electron_underline.svg");
-  background-size: 100% auto;
-  background-repeat: no-repeat;
-  height: 5rem;
-  width: 24rem;
-  position: relative;
-  bottom: 1.5rem;
-  right: 0rem;
-}
 .ar-signIn, .signIn-link {
   display: none !important;
 }
@@ -183,55 +153,6 @@ h1::after {
   animation: spinner .6s linear infinite;
   z-index: 10;
 }
-#network-info-panel {
-  position: fixed;
-  bottom: 0rem;
-  height: 10vh;
-  width: 100vw;
-  transition: height .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-#network-info-panel.open {
-  height: 95vh;
-}
-.info-panel-avatar {
-  margin-top: -1rem;
-  margin-right: -1rem;
-  width: 8rem;
-  height: 8rem;
-  background-position: center center;
-  background-size: cover;
-}
-.feedback-panel-avatar {
-  width: 3rem;
-  height: 3rem;
-  background-position: center center;
-  background-size: cover;  
-}
-#network-info-panel-main {
-  height: 100%;
-  width: 100vw;
-  display: grid;
-  grid-template-columns: 100vw 100vw;
-  left: 0;
-  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-#panel-1, #panel-2 {
-  width: 100vw;
-  left: 0;
-  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-#panel-1.off-screen { 
-  left: -100vw;
-  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-#panel-2.off-screen { 
-  left: 100vw;
-  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.on-screen { 
-  left: 0;
-  transition: left .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
 
 .profile-avatar {
   position: absolute;
@@ -250,10 +171,6 @@ h1::after {
   background-image: url("data:image/svg+xml;uft8,%3Csvg%20width%3D%22515%22%20height%3D%2240%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22.33%22%20stroke-linecap%3D%22square%22%3E%3Cpath%20stroke%3D%22%2364ABFF%22%20d%3D%22M.5%2020.5h515%22%2F%3E%3Cpath%20stroke%3D%22%23FF7C66%22%20d%3D%22M72.5.5v80%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
   background-repeat: repeat-y;
   background-size: 100% auto;
-}
-#feedbacks-panel section {
-  margin: 1rem auto;
-  max-width: 48rem;
 }
 input[type="url"] {
   outline: none;
@@ -313,27 +230,61 @@ input[type="url"]::placeholder {
 .select-css:disabled:hover, .select-css[aria-disabled=true] {
   border-color: #aaa;
 }
-.hex-but {
-  transform: rotate(180deg);
-  transition: transform .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transition-delay: .3s;
+#main-container {
+  position: relative;
 }
-.hex-but-pull-up {
+#control-panel {
+  background-color: rgba(244,244,244,0.25);
+  backdrop-filter: blur(5px);
   position: absolute;
-  top: -32px;
-  left: 50%;
-  transform-origin: center center;
-  transform: translate(-32px);
+  top: 1rem;
+  padding: 1rem 1rem 5rem 1rem;
+  border-radius: 0 .5rem .5rem 0;
+  border: 2px solid var(--mv-supernova);
+  width: 24rem;
+  transition: left 1s;
 }
+#control-panel .control-panel-avatar {
+  background-color: #ffe352;
+  background-size: cover;
+  background-position: center center;
+  height: 11rem;
+  width: 11rem;
+  border-radius: 100%;
+  position: absolute;
+  top: -1rem;
+  right: -3rem;
+  border: solid 2px var(--mv-supernova);
+}
+#control-panel footer nav {
+  position: absolute;
+  bottom: -2rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: baseline;
+  width: 22rem;
+}
+.mv-hover-underline:hover {
+  transform: translate(0,-.25rem);
+}
+#preview-panel {
+  background-color: rgba(244,244,244,0.25);
+  backdrop-filter: blur(5px);
+  position: absolute;
+  bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0 .5rem .5rem 0;
+  border: 2px solid var(--mv-supernova);
+  width: 24rem;
+  height: calc(100vh - 24rem);
+  transition: left 1s;  
+}
+
 @media screen and (min-width: 30em) {
   .network-loading::after {
     content: "Rendering network graph ... please be patient";
   }
 }
 @media screen and (min-width: 60em) {
-  #network-info-panel-main #panel-1 {
-    display: grid;
-    grid-template-columns: 50vw auto;
-    grid-template-rows: auto;
-  }
+
 }

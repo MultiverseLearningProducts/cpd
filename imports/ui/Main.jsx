@@ -4,6 +4,9 @@ import { useCurrentUser } from 'react-meteor-hooks'
 import { AccountsReactComponent } from 'meteor/gwened:meteor-accounts-react'
 import { version } from '/package.json'
 import { MainContainer } from './MainContainer'
+import { Provider } from 'react-redux'
+import { store } from './redux'
+
 
 export const Main = (props) => {
   const user = useCurrentUser()
@@ -21,10 +24,13 @@ export const Main = (props) => {
     return (
       <section>
         <header id="#header" className="flex justify-end items-center">
+          
           <span className="dib mv-white mr2">v{version}</span>
           <GoogleUser user={user} />
         </header>
-        <MainContainer user={user} />
+        <Provider store={store}>
+          <MainContainer user={user} />
+        </Provider>
       </section>
     ) 
   } else {
