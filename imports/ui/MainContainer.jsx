@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { VisNetwork } from './components/VisNetwork'
-import { useMethod } from '../both/useMethod';
-import { ControlPanel } from './components/ControlPanel';
-import { PreviewPanel } from './components/PreviewPanel';
-import { Search } from './components/Search';
+import { useMethod } from '../both/useMethod'
+import { ControlPanel } from './components/ControlPanel'
+import { PreviewPanel } from './components/PreviewPanel'
+import { Search } from './components/Search'
 
 export const MainContainer = ({user}) => {
     const profiles = useMethod('getProfiles')

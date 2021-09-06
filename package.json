@@ -16,6 +16,7 @@
     "bcrypt": "^5.0.1",
     "btoa": "^1.2.1",
     "chart.js": "^3.4.1",
+    "date-fns": "^2.23.0",
     "html-react-parser": "^1.2.7",
     "meteor-node-stubs": "^1.0.1",
     "react": "^16.13.1",

@@ -60,7 +60,13 @@ html {
 .mv-atlas {
   font-family: 'AtlasGrotesk-Regular', sans-serif;
 }
+.mv-atlas-mid {
+  font-family: 'AtlasGrotesk-Medium', sans-serif;
+}
 .mv-white {
+  color: var(--mv-white-dwarf);
+}
+.mv-white-dwarf {
   color: var(--mv-white-dwarf);
 }
 .mv-electron {
@@ -304,7 +310,29 @@ input[type="url"]::placeholder {
   opacity: 1;
   color: white;
 }
-
+.google-cal {
+  background-image: url('data:image/svg+xml;utf8,%3Csvg%20width%3D%22500%22%20height%3D%22500%22%20viewBox%3D%220%200%20500%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20xmlns%3Axlink%3D%22http%3A%2F%2Fwww.w3.org%2F1999%2Fxlink%22%3E%3Cdefs%3E%3Cpath%20id%3D%22a%22%20d%3D%22M.06%200H500v500H.06z%22%2F%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cpath%20fill%3D%22%23FFFFFE%22%20d%3D%22M118.457%20381.641h263.184V118.457H118.457z%22%2F%3E%3Cpath%20fill%3D%22%23D84037%22%20d%3D%22M381.543%20500%20500%20381.543H381.543V500%22%2F%3E%3Cpath%20fill%3D%22%23F1B628%22%20d%3D%22M381.543%20381.641H500V118.457H381.543z%22%2F%3E%3Cmask%20id%3D%22b%22%20fill%3D%22%23fff%22%3E%3Cuse%20xlink%3Ahref%3D%22%23a%22%2F%3E%3C%2Fmask%3E%3Cpath%20fill%3D%22%23319F4F%22%20mask%3D%22url(%23b)%22%20d%3D%22M118.457%20500h263.184V381.543H118.457z%22%2F%3E%3Cpath%20d%3D%22M0%20381.543v78.906C0%20482.324%2017.676%20500%2039.453%20500h78.906V381.543H0%22%20fill%3D%22%231E783E%22%20mask%3D%22url(%23b)%22%2F%3E%3Cpath%20d%3D%22M500%20118.457V39.453C500%2017.676%20482.324%200%20460.547%200h-78.906v118.457H500%22%20fill%3D%22%23395E9C%22%20mask%3D%22url(%23b)%22%2F%3E%3Cpath%20d%3D%22M381.543%200H39.453C17.676%200%200%2017.676%200%2039.453v342.09h118.457V118.457h263.184V0h-.098%22%20fill%3D%22%235373AA%22%20mask%3D%22url(%23b)%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E');
+  background-size: cover;
+  height: 4rem;
+  width: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 200%;
+  font-weight: bolder;
+}
+.journal-extract h3 {
+  padding-right: 4rem;
+}
+.journal-extract p {
+  font-family: 'AtlasGrotesk-Regular';
+  font-size: .875rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 16rem;
+}
 @media screen and (min-width: 30em) {
   .network-loading::after {
     content: "Rendering network graph ... please be patient";

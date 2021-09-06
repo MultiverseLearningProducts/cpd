@@ -21,14 +21,18 @@ const googleColorCodes = [
 
 const CalEvt = props => {
     const {
+        id,
         summary,
         colorId = 0
     } = props.calEvt
     const style = {
         backgroundColor: googleColorCodes[Number(colorId)]
     }
+    const openFocusWith = () => {
+        console.log(props.calEvt)
+    }
     return (
-        <article style={style} className="pa2 br3 mv1 mv-white">{summary}</article>
+        <article onClick={openFocusWith} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
     )
 }
 
