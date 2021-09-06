@@ -84,6 +84,9 @@ html {
 .mv-ultraviolet {
   color: var(--mv-ultraviolet);
 }
+.mv-molten {
+  color: var(--mv-molten);
+}
 .bg-mv-molten {
   background-color: var(--mv-molten);
 }
@@ -101,6 +104,12 @@ html {
 }
 .b--mv-ultraviolet {
   border-color: var(--mv-ultraviolet);
+}
+.b--mv-molten {
+  border-color: var(--mv-molten);
+}
+.b--mv-deep-space {
+  border-color: var(--mv-deep-space);
 }
 
 h1,
@@ -332,6 +341,10 @@ input[type="url"]::placeholder {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 16rem;
+}
+.journal-extract p.tags {
+  text-overflow: initial;
+  overflow-x: scroll;
 }
 @media screen and (min-width: 30em) {
   .network-loading::after {

@@ -1,8 +1,9 @@
 import React from 'react'
 import { PreviewObservations } from './PreviewObservations'
 import { PreviewJournal } from './PreviewJournal'
+import { PreviewStats } from './PreviewStats'
 import { withTracker } from 'meteor/react-meteor-data'
-import { ObservationsCollection } from '../../db/ObservationsCollection'
+import { ObservationsCollection } from '../../../db/ObservationsCollection'
 
 const _PreviewPanel = props => {
     const { previewPanel } = props
@@ -12,6 +13,7 @@ const _PreviewPanel = props => {
             <h1 className="mt0 mb2">{heading}</h1>
             {heading === 'Observations' ? <PreviewObservations {...props} /> : null}
             {heading === 'Journal' ? <PreviewJournal {...props} /> : null}
+            {heading === 'Stats' ? <PreviewStats {...props} /> : null}
         </section>
     )
 }

@@ -1,10 +1,10 @@
 import React from 'react'
-import { CalIcon, JournalIcon, TargetIcon } from './Icons'
+import { CalIcon, JournalIcon, TargetIcon } from './misc/Icons'
 
 export const ControlPanel = ({selected, setPreviewPanel}) => {
     const glimmer = {
         isGlimmer: true,
-        avatarUrl: '',
+        avatarUrl: '/watermark.jpg',
         displayName: '✦✦✦✦✦',
         about: {
             avatar: null
