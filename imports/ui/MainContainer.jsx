@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import { VisNetwork } from './components/VisNetwork'
 import { useMethod } from '../both/useMethod'
 import { ControlPanel } from './components/ControlPanel'
 import { PreviewPanel } from './components/preview-panel/PreviewPanel'
+import * as Focus from './components/focus-panel/FocusPanel'
 import { Search } from './components/misc/Search'
 
 export const MainContainer = ({user}) => {
@@ -12,6 +13,7 @@ export const MainContainer = ({user}) => {
     const [network, setNetwork] = useState(null)
     const [previewPanel, setPreviewPanel] = useState(null)
     const [previewPanelCalEvents, setPreviewPanelCalEvents] = useState({})
+    const [focusState, focusDispatch] = useReducer(Focus.focusPanelReducer, Focus.focusPanelState)
 
     const onSelect = id => {
         if (!profiles.data) return
@@ -25,6 +27,7 @@ export const MainContainer = ({user}) => {
 
     useEffect(() => {
         setPreviewPanel(null)
+        focusDispatch({type: 'close_focus_panel'})
         if (selected) {
             network.setSelection({nodes: [selected.id]})
             network.focus(selected.id, {
@@ -40,13 +43,17 @@ export const MainContainer = ({user}) => {
         if(!selected) return
         if(!(selected.data.email in previewPanelCalEvents)) {
             getEvents.call(selected.data.email)
-                .then(({items}) => {
-                    // cache everyone's calendar data in a big hashtable where their email is their key
-                    console.info(`fetched ${items.length} google calendar events for ${selected.data.email}`)
-                    setPreviewPanelCalEvents({[selected.data.email]: items} || {})
+                .then(result => {
+                    if (result.status === 'UNAUTHENTICATED') {
+                        setPreviewPanelCalEvents({...previewPanelCalEvents, refresh: true})
+                    } else {
+                        // cache everyone's calendar data in a big hashtable where their email is their key
+                        setPreviewPanelCalEvents({...previewPanelCalEvents, [selected.data.email]: result.items, refresh: false} || {})
+                    }
                 })
                 .catch(console.error)
         }
+        focusDispatch({type: 'close_focus_panel'})
     }, [previewPanel])
 
     useEffect(() => {
@@ -59,8 +66,13 @@ export const MainContainer = ({user}) => {
         <main id="main-container">
             {profiles.data ? <Search profiles={profiles.data.nodes} onSelect={onSelect} /> : null}   
             {profiles.data ? <VisNetwork onSelect={onSelect} data={profiles.data} setNetwork={setNetwork} /> : null}
-            <ControlPanel selected={selected} setPreviewPanel={setPreviewPanel} />
-            <PreviewPanel previewPanel={previewPanel} previewPanelCalEvents={previewPanelCalEvents} />
+            <Focus.DispatchContext.Provider value={focusDispatch}>
+                <Focus.StateContext.Provider value={focusState}>
+                    <ControlPanel selected={selected} setPreviewPanel={setPreviewPanel} />
+                    <PreviewPanel previewPanel={previewPanel} previewPanelCalEvents={previewPanelCalEvents} />
+                    <Focus.Panel selected={selected} />
+                </Focus.StateContext.Provider>
+            </Focus.DispatchContext.Provider>
         </main>
     )
 }

@@ -27,7 +27,9 @@ ServiceConfiguration.configurations.upsert(
 AccountsReact.configure({
   oauth: {
     google: {
-      requestPermissions: googlePermissions
+      requestPermissions: googlePermissions,
+      requestOfflineToken: true,
+      forceApprovalPrompt: true
     }
   }
 })
@@ -68,12 +70,12 @@ Meteor.methods({
     const [ profile ] = ProfilesCollection.find(query).fetch()
     return profile
   },
-  async getGoogleCalEvents(email) {
+  async getGoogleCalEvents(email, resumeToken) {
     if (!Meteor.user()) return
     const {services: {google}} = Meteor.user()
     try {
       const url = `https://www.googleapis.com/calendar/v3/calendars/${encodeURIComponent(email || google.email)}/events`
-      const headers = {'Authorization': `Bearer ${google.accessToken}`}
+      const headers = {'Authorization': `Bearer ${resumeToken ? resumeToken : google.accessToken}`}
       const params = new URLSearchParams({
         q: '(obs)',
         singleEvents: true,
@@ -88,11 +90,19 @@ Meteor.methods({
       const data = await res.json()
       if (data.error) throw data.error
       
-      console.info(`getGoogleCalEvents: ${data.items.length} obs for ${email}`)
+      console.info(`${email} ${data.items.length} calEvts`)
       return data
     } catch(err) {
-      console.error(err)
-
+      if (err.status === 'UNAUTHENTICATED') {
+        const {
+          services: {
+            resume: {
+              loginTokens
+            }
+          }
+        } = Meteor.user()
+        console.warn('UNAUTHENTICATED - expired', loginTokens)
+      }
       return err
     }
   },

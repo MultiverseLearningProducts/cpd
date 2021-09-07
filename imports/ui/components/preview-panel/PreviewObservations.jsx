@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { DispatchContext } from '../focus-panel/FocusPanel'
 
 const inFuture = date => {
     new Date(date).getTime() < new Date().getTime()
@@ -20,6 +21,7 @@ const googleColorCodes = [
 ]
 
 const CalEvt = props => {
+    const dispatch = useContext(DispatchContext)
     const {
         id,
         summary,
@@ -29,7 +31,7 @@ const CalEvt = props => {
         backgroundColor: googleColorCodes[Number(colorId)]
     }
     const openFocusWith = () => {
-        console.log(props.calEvt)
+        dispatch({type: 'open_focus_panel', heading: 'Add Reflections and Feedback', content: props.calEvt})
     }
     return (
         <article onClick={openFocusWith} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
@@ -46,22 +48,39 @@ export const PreviewObservations = props => {
         }
     } = previewPanel
     const calEvents = previewPanelCalEvents[email]
+    if (previewPanelCalEvents.refresh) {
+        return (
+            <section id="preview-observations">
+                <article className="bg-mv-white-dwarf br3 pa3 mb3 lh-copy">
+                    Your Google token has expired. To gain access to your Google calendar once again you will have to log out and log back into this app. That will cause you to gain a fresh access token. Google issue these tokens with a life span of 1h for your security.
+                </article>
+            </section>
+        )
+    }
     if (!calEvents) return null
     const observing = calEvents.filter(calEvt => {
         if (!inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees.find(att => att.email === email && !att.organizer)    
+        return calEvt.attendees 
+        && calEvt.attendees.find(att => att.email === email) 
+        && calEvt.creator.email !== email
     })
     const observedBy = calEvents.filter(calEvt => {
         if (!inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees.find(att => att.email === email && att.organizer)
+        return calEvt.attendees 
+        && calEvt.attendees.find(att => att.email === email) 
+        && calEvt.creator.email === email
     })
     const toRefelect = calEvents.filter(calEvt => {
         if (inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees.find(att => att.email === email && att.organizer)
+        return calEvt.attendees 
+        && calEvt.attendees.find(att => att.email === email) 
+        && calEvt.creator.email === email
     })
     const toFeedback = calEvents.filter(calEvt => {
         if (inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees.find(att => att.email === email && !att.organizer)
+        return calEvt.attendees 
+        && calEvt.attendees.find(att => att.email === email) 
+        && calEvt.creator.email !== email
     }) 
     return (
         <section id="preview-observations">

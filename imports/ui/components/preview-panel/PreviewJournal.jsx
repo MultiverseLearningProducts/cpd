@@ -1,4 +1,5 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { DispatchContext } from '../focus-panel/FocusPanel'
 import { format, differenceInDays } from 'date-fns'
 import parse from 'html-react-parser'
 import { Tag, TagCount } from '../misc/Tag'
@@ -6,6 +7,8 @@ import { Tag, TagCount } from '../misc/Tag'
 const nameOf = ({email}) => email.split('.').shift().charAt(0).toUpperCase() + email.split('.').shift().substring(1)
 
 const JournalEntry = props => {
+    const dispatch = useContext(DispatchContext)
+    
     const {
         calEvt_date,
         observer,
@@ -14,9 +17,13 @@ const JournalEntry = props => {
     } = props.ob
     
     const daysAgo = differenceInDays(new Date(), new Date(calEvt_date))
+    
+    const openFocusWith = () => {
+        dispatch({type: 'open_focus_panel', heading: 'Reflections and Insights Journal', content: props.ob})
+    }
 
     return (
-        <article className="br3 bg-mv-white-dwarf mb3">
+        <article className="br3 bg-mv-white-dwarf mb3" onClick={openFocusWith}>
             <header className="flex">
                 <h3 className="mv-atlas-mid ma0 flex-auto pa2 journal-extract">
                     {daysAgo} day{daysAgo === 1 ? '' : 's'} ago<br/>

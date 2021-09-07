@@ -5,9 +5,10 @@ import { PreviewStats } from './PreviewStats'
 import { withTracker } from 'meteor/react-meteor-data'
 import { ObservationsCollection } from '../../../db/ObservationsCollection'
 
-const _PreviewPanel = props => {
+const _PreviewPanel_ = props => {
     const { previewPanel } = props
     const heading = previewPanel ? previewPanel.heading : '✦✦✦✦✦'
+
     return (
         <section id="preview-panel" style={{left: !previewPanel ? '-28rem' : '-2px'}} className="overflow-scroll pb2">
             <h1 className="mt0 mb2">{heading}</h1>
@@ -30,5 +31,5 @@ export const PreviewPanel = withTracker(props => {
         }
     }).fetch()
     return { loading, observations }    
-})(_PreviewPanel)
+})(_PreviewPanel_)
 

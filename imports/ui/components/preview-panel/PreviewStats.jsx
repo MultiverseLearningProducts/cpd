@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tag, TagCount } from '../misc/Tag'
 import { FrequencyChart } from '../stats-panel/FrequencyChart'
+import { RadarChartMini } from '../stats-panel/RadarChartMini'
 
 const sortedScores = observations => {
     const unsorted = observations
@@ -35,9 +36,8 @@ export const PreviewStats = props => {
     } = props
     return (
         <section id="preview-stats">
-            <button className="b--transparent ba bw1 b--mv-deep-space br3 mb3 w-100 tc pv3 mv-deep-space bg-mv-electron shadow-3 mv-atlas-mid f3">
-                Open Coaching Profile
-            </button>
+            <RadarChartMini observations={observations} email={email} />
+            <h2>Your coaching strengths</h2>
             <article className="br3 pa3 bg-mv-white-dwarf lh-copy">
                 {observations.length
                     ? sortedScores(observations).map(([tag, score]) => {

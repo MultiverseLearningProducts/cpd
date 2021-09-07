@@ -1,6 +1,7 @@
 import React from 'react'
 import { Left2RightArrow, HexBut } from './DecorativeElements'
 import parse from 'html-react-parser'
+import { getFirstNameFromEmail } from '../../both/getFirstNameFromEmail'
 
 export const ObsFeedbacks = props => {
     const {
@@ -21,11 +22,6 @@ export const ObsFeedbacks = props => {
         return email === observer.email
         || email === observed.email
     }
-
-    const getFirstName = email => {
-        const name = email.split('.')[0]
-        return name[0].toUpperCase() + name.substring(1)
-    }
     
     if (!reflection && !feedback) return null
     
@@ -37,9 +33,8 @@ export const ObsFeedbacks = props => {
                 <hr className="flex-auto ml2 b--black"/>
             </i>
             <span className="flex items-center flex-wrap justify-start">{tags.length ? tags.map(t => <span key={t.value} className="tag">{t.label}</span>) : "Not tagged"}</span>
-            {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstName(observed.email)}'s reflection.</p>}
+            {reflection ? parse(reflection) : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for {getFirstNameFromEmail(observed.email)}'s reflection.</p>}
             {showPrivate() && private_reflection ? <span className="o-80">{parse(private_reflection)}</span> : null}
-            {/* {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}---- {parse(feedback)}</i> : <p className="o-50 pa2 b--dashed bw1 b--black-50">Waiting for feedback from {getFirstName(observer.email)}</p>} */}
             {showPrivate() && private_feedback ? <i className="o-80 mv-ultraviolet">{parse(private_feedback)}</i> : null}
             {feedback ? <i className="mt2 mv-ultraviolet">----{observer.email}----</i> : null}
             {feedbacks.length ? <label className="db b i mt2">Comments</label> : null}
