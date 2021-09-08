@@ -3,6 +3,7 @@ import { FocusStats } from './FocusStats'
 import { FocusJournal } from './FocusJournal'
 import { FocusCalEvts } from './FocusCalEvts'
 import './focus.css'
+import { propTypes } from 'react-addons-pure-render-mixin'
 
 export const focusPanelState = {open: false, heading: '✦✦✦✦✦', content: null}
 
@@ -20,7 +21,7 @@ export const focusPanelReducer = (state, action) => {
 export const StateContext = React.createContext(focusPanelState)
 export const DispatchContext = React.createContext()
 
-export const Panel = () => {
+export const Panel = props => {
     const { open, heading, content } = useContext(StateContext)
     const dispatch = useContext(DispatchContext)
 
@@ -33,10 +34,10 @@ export const Panel = () => {
                     className="bg-transparent b--transparent mv-deep-space" 
                     onClick={() => dispatch({type: 'close_focus_panel'})}>close</button>
             </header>
-            <main>
+            <main className="pt3">
                 {heading === 'Your Strengths' ? <FocusStats data={content} /> : null}
                 {heading === 'Reflections and Insights Journal' ? <FocusJournal data={content} /> : null}
-                {heading === 'Add Reflections and Feedback' ? <FocusCalEvts data={content} /> : null}
+                {heading === 'Add Reflections and Feedback' ? <FocusCalEvts data={content} profiles={props.profiles} /> : null}
             </main>
         </section>
     )

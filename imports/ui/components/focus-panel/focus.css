@@ -9,7 +9,7 @@
     border: 2px solid var(--mv-supernova);
     width: calc(100vw - 28rem);
     transition: right .75s;
-    overflow-y: hidden;
+    overflow-y: scroll;
 }
 #focus-journal main {
     height: 64vh;

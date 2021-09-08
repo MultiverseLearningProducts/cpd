@@ -1,9 +1,6 @@
 import React, { useContext } from 'react'
 import { DispatchContext } from '../focus-panel/FocusPanel'
-
-const inFuture = date => {
-    new Date(date).getTime() < new Date().getTime()
-}
+import { isPast } from 'date-fns'
 
 const googleColorCodes = [
     '#039be5',
@@ -22,10 +19,12 @@ const googleColorCodes = [
 
 const CalEvt = props => {
     const dispatch = useContext(DispatchContext)
+
     const {
-        id,
         summary,
-        colorId = 0
+        colorId = 0,
+        mode,
+        htmlLink
     } = props.calEvt
     const style = {
         backgroundColor: googleColorCodes[Number(colorId)]
@@ -33,13 +32,15 @@ const CalEvt = props => {
     const openFocusWith = () => {
         dispatch({type: 'open_focus_panel', heading: 'Add Reflections and Feedback', content: props.calEvt})
     }
-    return (
-        <article onClick={openFocusWith} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
-    )
+    if (mode > 1) {
+        return <a style={style} className="dib link pa2 br3 mv1 mv-white" href={htmlLink} target="_blank">{summary}</a>
+    } else {
+        return <article onClick={openFocusWith} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
+    }
 }
 
 export const PreviewObservations = props => {
-    const { previewPanel, previewPanelCalEvents } = props
+    const { previewPanel, previewPanelCalEvents, observations } = props
     const {
         user: {
             data: {
@@ -57,37 +58,33 @@ export const PreviewObservations = props => {
             </section>
         )
     }
+    
     if (!calEvents) return null
-    const observing = calEvents.filter(calEvt => {
-        if (!inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees 
-        && calEvt.attendees.find(att => att.email === email) 
-        && calEvt.creator.email !== email
-    })
-    const observedBy = calEvents.filter(calEvt => {
-        if (!inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees 
-        && calEvt.attendees.find(att => att.email === email) 
-        && calEvt.creator.email === email
-    })
-    const toRefelect = calEvents.filter(calEvt => {
-        if (inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees 
-        && calEvt.attendees.find(att => att.email === email) 
-        && calEvt.creator.email === email
-    })
-    const toFeedback = calEvents.filter(calEvt => {
-        if (inFuture(calEvt.start.dateTime)) return false
-        return calEvt.attendees 
-        && calEvt.attendees.find(att => att.email === email) 
-        && calEvt.creator.email !== email
-    }) 
+
+    const observing = calEvents
+        .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
+        .map(calEvt => ({...calEvt, mode: 3, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+    
+    const observedBy = calEvents
+        .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
+        .map(calEvt => ({...calEvt, mode: 2, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+
+    const toReflect = calEvents
+        .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
+        .map(calEvt => ({...calEvt, mode: 1, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+        .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
+
+    const toFeedback = calEvents
+        .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
+        .map(calEvt => ({...calEvt, mode: 0, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+        .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
+
     return (
         <section id="preview-observations">
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
                 <h3>Sessions you are observing</h3>
                 {observing.length ? (
-                    observing.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt}/>)
+                    observing.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
                     <p>Set up some observations. Go see some coaching!</p>
                 )}
@@ -95,23 +92,23 @@ export const PreviewObservations = props => {
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
                 <h3>Coaches observing you</h3>
                 {observedBy.length ? (
-                    observedBy.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt}/>)
+                    observedBy.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
                     <p>Set up some observations. Get someone to watch you coaching!</p>
                 )}
             </article>
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
-                <h3>Sessions to reflect on</h3>
-                {toRefelect.length ? (
-                    toRefelect.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt}/>)
+                <h3>Past sessions to reflect on</h3>
+                {toReflect.length ? (
+                    toReflect.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
                     <p>You don't have sessions that need a reflection</p>
                 )}
             </article>
             <article className="bg-mv-white-dwarf br3 ph3 pv2">
-                <h3>Feedback on these sessions</h3>
+                <h3>Feedback on these past sessions</h3>
                 {toFeedback.length ? (
-                    toFeedback.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt}/>)
+                    toFeedback.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
                     <p>You don't have to give any feedback.</p>
                 )}

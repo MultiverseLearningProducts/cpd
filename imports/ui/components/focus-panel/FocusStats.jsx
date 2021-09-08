@@ -1,10 +1,88 @@
 import React from 'react'
+import { Radar, Scatter } from 'react-chartjs-2'
+import 'chartjs-adapter-date-fns'
+import { enGB } from 'date-fns/locale'
 
 export const FocusStats = ({data}) => {
+    const radarOptions = {
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: ctx => ctx.raw
+                },
+                backgroundColor: '#242456',
+                displayColors: false
+            }
+        }
+    }
+    const radarData = {
+        labels: data.radarData.labels,
+        datasets: [{
+            data: data.radarData.data,
+            fill: true,
+            backgroundColor: 'rgba(255,124,102, 0.8)',
+            borderColor:'rgba(255,124,102, 1)',
+            pointRadius: 6,
+            pointBorderColor: '#f4f4f4',
+            borderCapStyle: 'round',
+            tension: .1
+        }],
+    }
+    const scatterOptions = {
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: ctx => ctx.raw.r
+                },
+                backgroundColor: '#242456',
+                displayColors: false
+            }
+        },
+        elements: {
+            point: {
+                radius: 6,
+                hoverRadius: 5,
+                borderWidth: 1,
+                borderColor: '#242456'
+            },
+            stepped: true
+        },
+        scales: {
+            x: {
+                type: 'time',
+                adapters: {
+                    date: {
+                        locale: enGB
+                    }
+                },
+                time: {
+                    unit: 'week'
+                }
+            },
+            y: {
+                type: 'linear',
+                min: 1,
+                max: 3,
+                display: false
+            }
+        }
+    }
+    const scatterData = data.frequencyData
     return (
         <section>
-            <h2>Stats</h2>
-            <pre>{JSON.stringify(data, null, 2)}</pre>
+            <article className="bg-mv-white-dwarf br3 pa3">
+                <Radar data={radarData} options={radarOptions} hight="40vw" width="40vw" />
+            </article>
+            <article className="bg-mv-white-dwarf br3 pa3 mt3">
+                <Scatter data={scatterData} options={scatterOptions} width="100%" height="120" />
+            </article>
         </section>
     )
 }

@@ -45,7 +45,7 @@ export const MainContainer = ({user}) => {
             getEvents.call(selected.data.email)
                 .then(result => {
                     if (result.status === 'UNAUTHENTICATED') {
-                        setPreviewPanelCalEvents({...previewPanelCalEvents, refresh: true})
+                        setPreviewPanelCalEvents({refresh: true})
                     } else {
                         // cache everyone's calendar data in a big hashtable where their email is their key
                         setPreviewPanelCalEvents({...previewPanelCalEvents, [selected.data.email]: result.items, refresh: false} || {})
@@ -70,7 +70,7 @@ export const MainContainer = ({user}) => {
                 <Focus.StateContext.Provider value={focusState}>
                     <ControlPanel selected={selected} setPreviewPanel={setPreviewPanel} />
                     <PreviewPanel previewPanel={previewPanel} previewPanelCalEvents={previewPanelCalEvents} />
-                    <Focus.Panel selected={selected} />
+                    <Focus.Panel selected={selected} profiles={profiles.data && profiles.data.nodes} />
                 </Focus.StateContext.Provider>
             </Focus.DispatchContext.Provider>
         </main>

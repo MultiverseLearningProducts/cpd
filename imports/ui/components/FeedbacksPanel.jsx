@@ -69,11 +69,11 @@ const Feedbacks = props => {
         isObserved,
         isGuest
     ] = [
-            user.services.google.email === observer.data.email,
-            user.services.google.email === observed.data.email,
-            user.services.google.email !== observer.data.email &&
-            user.services.google.email !== observed.data.email
-        ]
+        user.services.google.email === observer.data.email,
+        user.services.google.email === observed.data.email,
+        user.services.google.email !== observer.data.email &&
+        user.services.google.email !== observed.data.email
+    ]
 
     if (props.loading) return <article className="pa2 pt4">Loading...</article>
 

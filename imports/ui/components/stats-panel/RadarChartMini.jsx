@@ -1,11 +1,7 @@
 import React, { useContext } from 'react'
 import { Radar } from 'react-chartjs-2'
-import { coachingRubricLabels } from '../../../both/coaching-rubric'
-import { DispatchContext } from '../focus-panel/FocusPanel'
 
 export const RadarChartMini = props => {
-    const genRandData = new Array(21).fill(0).map(n => Math.round(Math.random() * 20) + 1)
-    const dispatch = useContext(DispatchContext)
     const options = {
         plugins: {
             legend: {
@@ -34,21 +30,13 @@ export const RadarChartMini = props => {
                     display: false
                 }
             }
-        },
-        animations: {
-            tension: {
-                duration: 2600,
-                easing: 'linear',
-                from: .3,
-                to: -0.3,
-                loop: true
-            }
         }
     }
+
     const data = {
-        labels: coachingRubricLabels,
+        labels: props.data.labels,
         datasets: [{
-            data: genRandData,
+            data: props.data.data,
             fill: true,
             backgroundColor: 'rgba(255,124,102, 0.8)',
             borderColor:'rgba(255,124,102, 1)',
@@ -59,7 +47,7 @@ export const RadarChartMini = props => {
         }],
     }
     return (
-        <section id="mini-radar" onClick={() => dispatch({type: 'open_focus_panel', heading: 'Your Strengths', content: data})}>
+        <section id="mini-radar" onClick={() => props.openFocusPanelWith()}>
             <Radar data={data} options={options} height="120" width="100%" />
         </section>
     )
