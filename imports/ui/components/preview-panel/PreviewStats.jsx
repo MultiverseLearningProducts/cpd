@@ -32,8 +32,8 @@ function formatObservationsData(observations, email, asObserver) {
         const {calEvt_date, observer, observed, tags} = ob
         const daysAgo = differenceInDays(new Date(), new Date(calEvt_date))
         const tooltip = asObserver
-        ? `observing ${observer.email.split('.')[0]} ${daysAgo} days ago`
-        : `observed by ${observer.email.split('.')[0]} ${daysAgo} days ago gained ${tags.length} tag${tags.length === 1 ? '' : 's'} `
+        ? `observing ${observer.name} ${daysAgo} days ago`
+        : `observed by ${observer.name} ${daysAgo} days ago gained ${tags.length} tag${tags.length === 1 ? '' : 's'} `
         return {
             x: new Date(calEvt_date).getTime(),
             y: (asObserver ? observer.email : observed.email) === email ? 2 : 0,

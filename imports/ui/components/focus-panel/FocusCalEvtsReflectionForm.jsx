@@ -4,12 +4,6 @@ import { ObservationsCollection } from '../../../db/ObservationsCollection'
 import { DispatchContext } from './FocusPanel'
 
 export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
-    const [feedback, setFeedback] = useState("")
-    const [privateFeedback, setPrivateFeedback] = useState("")
-    const [recordingURL, setRecordingURL] = useState("")
-    const [obsType, setObsType] = useState("2")
-    const dispatch = useContext(DispatchContext)
-
     const {
         id,
         start: {
@@ -17,12 +11,22 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
         },
         organizer,
         attendees,
-        summary,
-        observation
+        observation = {
+            reflection: "",
+            private_reflection: "",
+            recording_url: "",
+            obs_type: "2"
+        }
     } = data
 
-    console.log(data)
     
+    const [feedback, setFeedback] = useState(observation.reflection)
+    const [privateFeedback, setPrivateFeedback] = useState(observation.private_reflection)
+    const [recordingURL, setRecordingURL] = useState(observation.recording_url)
+    const [obsType, setObsType] = useState(observation.obs_type)
+    const [formError, setFormError] = useState(null)
+    const dispatch = useContext(DispatchContext)
+
     const submitObservation = () => {
         const observed = profiles.find(profile => profile.data.email === organizer.email)
         const [_observer] = attendees.filter(att => att.email !== organizer.email)
@@ -54,23 +58,66 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
             private_reflection: privateFeedback,
             recording_url: recordingURL,
         }
-        console.log(insert)
+        if (observation && observation._id) {
+            const update = Object.assign(observation, {
+                obs_type: obsType,
+                reflection: feedback,
+                private_reflection: privateFeedback,
+                recording_url: recordingURL,                
+            })
+            ObservationsCollection.update(observation._id, {$set: {...update}})
+        } else {
+            const insert = {
+                calEvt_id: id,
+                calEvt_date: dateTime,
+                observer: {
+                    name: observer.data.firstName,
+                    email: observer.data.email,
+                    avatar: observer.data.avatarUrl || observer.data.about.avatar
+                },
+                observed: {
+                    name: observed.data.firstName,
+                    email: observed.data.email,
+                    avatar: observed.data.avatarUrl || observed.data.about.avatar
+                },
+                obs_type: obsType,
+                reflection: feedback,
+                private_reflection: privateFeedback,
+                recording_url: recordingURL,
+            }
+            ObservationsCollection.insert(insert)
+        }
         dispatch({type: 'close_focus_panel'})
+    }
+
+    const checkRecordingUrl = event => {
+        const { value } = event.currentTarget
+        if (value.match(/zoom\.us\/rec\/share/) || value.match(/youtube\.com|youtu.be/)) return
+        setRecordingURL('')
+        setFormError('Must be a zoom or youtube link')
     }
 
     return (
         <section className="bg-mv-white-dwarf br3 pa3">
             <div className="flex">
                 <div className="flex-auto pr3">
-                    <label className="dib mv2 tl w-100">Link to recording</label>
+                    <label className="dib mv2 tl w-100">
+                        Link to recording {formError 
+                        ? <span className="red">⚠️{formError}!</span> 
+                        : null}
+                    </label>
                     <input 
                         name="recording-url" 
-                        type="url" 
-                        defaultValue={recordingURL} 
+                        type="url"
+                        pattern="zoom\.us\/rec\/share"
+                        title="Must be a valid zoom link"
+                        value={recordingURL} 
                         onChange={e => setRecordingURL(e.currentTarget.value)}
                         className='pa2 mv2 tl w-100 se-placeholder'
                         style={{border: 'solid 1px #dadada'}}
-                        placeholder="optional link to recording" />
+                        placeholder="optional link to recording"
+                        onBlur={checkRecordingUrl}
+                        onFocus={() => setFormError(null)} />
                 </div>
                 <div className="flex-none">
                     <label className="dib mv2 tl w-100">Type of observation</label>

@@ -13,7 +13,7 @@ const JournalEntry = props => {
         calEvt_date,
         observer,
         reflection,
-        tags
+        tags = []
     } = props.ob
     
     const daysAgo = differenceInDays(new Date(), new Date(calEvt_date))
