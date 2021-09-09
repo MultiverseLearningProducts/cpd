@@ -23,12 +23,16 @@ export const RadarChartMini = props => {
                 display: false
             },
             r: {
+                ticks: {
+                    display: false
+                },
                 angleLines: {
                     display: true
                 },
                 pointLabels: {
                     display: false
-                }
+                },
+                suggestedMin: 0
             }
         }
     }
@@ -47,7 +51,7 @@ export const RadarChartMini = props => {
         }],
     }
     return (
-        <section id="mini-radar" onClick={() => props.openFocusPanelWith()}>
+        <section id="mini-radar" className="pointer" onClick={() => props.openFocusPanelWith()}>
             <Radar data={data} options={options} height="120" width="100%" />
         </section>
     )

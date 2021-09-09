@@ -11,16 +11,36 @@
     transition: right .75s;
     overflow-y: scroll;
 }
-#focus-journal main {
-    height: 64vh;
-}
 .paper {
     min-height: 80vh;
     box-shadow: 1px 1px 2px 0px rgba(0,0,0,0.4);
     padding-left: 10vw;
 }
+.paper p {
+    line-height: 1.5;
+}
 .bg-lined-paper {
     background-image: url("data:image/svg+xml;uft8,%3Csvg%20width%3D%22515%22%20height%3D%2240%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22.33%22%20stroke-linecap%3D%22square%22%3E%3Cpath%20stroke%3D%22%2364ABFF%22%20d%3D%22M.5%2020.5h515%22%2F%3E%3Cpath%20stroke%3D%22%23FF7C66%22%20d%3D%22M72.5.5v80%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
     background-repeat: repeat-y;
     background-size: 100% auto;
-  }
+}
+.paper main article p:last-child {
+    font-style: italic;
+}
+.scrolled-r::after {
+    content: ' ';
+    background-image: url('/mv-arrow-r.svg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    height: 2.5rem;
+    width: 4.5rem;
+    left: -5rem;
+    top: -5px;
+}
+.scrolled-l {
+    outline-style: solid;
+    outline-width: .25rem;
+    outline-offset: -.25rem;
+    outline-color: var(--mv-supernova);   
+}

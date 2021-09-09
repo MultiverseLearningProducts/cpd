@@ -53,7 +53,6 @@ export const MainContainer = ({user}) => {
                 })
                 .catch(console.error)
         }
-        focusDispatch({type: 'close_focus_panel'})
     }, [previewPanel])
 
     useEffect(() => {

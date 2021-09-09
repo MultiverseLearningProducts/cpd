@@ -1,5 +1,5 @@
 import React from 'react';
-import { GoogleUser } from './components/GoogleUser'
+import { GoogleUser } from './components/misc/GoogleUser'
 import { useCurrentUser } from 'react-meteor-hooks'
 import { AccountsReactComponent } from 'meteor/gwened:meteor-accounts-react'
 import { version } from '/package.json'
@@ -12,10 +12,10 @@ export const Main = (props) => {
 
   if (!user) {
     return (
-      <section className="flex flex-column vh-75 justify-center items-center">
-        <article className="ml-auto mr-auto mw6 lh-copy mv-white mb3">When you sign into this app with your Multiverse Google account we will pull data from HiBob and your work based Google Calendar. The observations, feedbacks, and reflections you post will be visible to all the team leads and coaches across LIO. As a member of LIO you will be able to read and browse the artifacts of continual professional development across the whole community.</article>
+      <section id="sign-in" className="flex flex-column vh-100 justify-start items-center">
+        <img src="/observatory-header.svg"/>
+        <article className="ml-auto mr-auto mw6 lh-copy mv-white mb4">When you sign into this app with your Multiverse Google account we will pull data from HiBob and your work based Google Calendar. The observations, feedbacks, and reflections you post will be visible to all the team leads and all the coaches across LIO.<br></br><br></br>As a member of LIO you will be able to read and browse the artifacts of continual professional development across the whole community. If you are happy about this please proceed and 'Continue with Google'</article>
         <AccountsReactComponent history={history} route={match.path} state='signIn' />
-        <article className="ml-auto mr-auto mw6 lh-copy mv-white mt3">If you are happy about please proceed and continue with Google.</article>
       </section>
     )
   } else if (user && user.services) {

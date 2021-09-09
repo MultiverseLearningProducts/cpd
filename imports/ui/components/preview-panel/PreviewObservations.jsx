@@ -60,24 +60,23 @@ export const PreviewObservations = props => {
     }
     
     if (!calEvents) return null
-
     const observing = calEvents
-        .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
-        .map(calEvt => ({...calEvt, mode: 3, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+    .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
+    .map(calEvt => ({...calEvt, mode: 3, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
     
     const observedBy = calEvents
-        .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
-        .map(calEvt => ({...calEvt, mode: 2, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
-
+    .filter(calEvt => !isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
+    .map(calEvt => ({...calEvt, mode: 2, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+    
     const toReflect = calEvents
-        .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
-        .map(calEvt => ({...calEvt, mode: 1, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
-        .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
-
+    .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email === email)
+    .map(calEvt => ({...calEvt, mode: 1, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+    .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
+    
     const toFeedback = calEvents
-        .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
-        .map(calEvt => ({...calEvt, mode: 0, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
-        .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
+    .filter(calEvt => isPast(new Date(calEvt.start.dateTime)) && calEvt.organizer.email !== email)
+    .map(calEvt => ({...calEvt, mode: 0, observation: observations.find(ob => ob.calEvt_id === calEvt.id)}))
+    .filter(calEvt => !calEvt.observation || !calEvt.observation.reflection || !calEvt.observation.feedback)
 
     return (
         <section id="preview-observations">

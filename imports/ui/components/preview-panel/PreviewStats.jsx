@@ -12,9 +12,7 @@ const sortedScores = observations => {
         .map(({ tags }) => tags)
         .flat()
         .reduce((memo, tag) => {
-            memo[tag.value]
-                ? memo[tag.value] = memo[tag.value] + 1
-                : memo[tag.value] = 1
+            tag.value in memo ? memo[tag.value]++ : memo[tag.value] = 1
             return memo
         }, {})
     return Object
@@ -47,6 +45,19 @@ function formatObservationsData(observations, email, asObserver) {
     }
 }
 
+function formatTagsData(observations, email) {
+    const tags = observations
+        .map(ob => ob.tags.map(t => t.label))
+        .filter(tags => tags.length)
+        .flat()
+        .sort()
+
+    return coachingRubricLabels.map(rubric => tags.reduce((memo, tag) => {
+        if (tag === rubric) memo++
+        return memo
+    }, 0))
+}
+
 export const PreviewStats = props => {
     const dispatch = useContext(DispatchContext)
     const {
@@ -59,10 +70,16 @@ export const PreviewStats = props => {
         },
         observations = []
     } = props
+
+    const currentlySelectedObservations = observations.filter(ob => ob.observed.email === email)
+
+    const scores = sortedScores(currentlySelectedObservations)
+    
     const radarData = {
         labels: coachingRubricLabels,
-        data: new Array(21).fill(0).map(n => Math.round(Math.random() * 20) + 1)
+        data: formatTagsData(currentlySelectedObservations)
     }
+
     const frequencyData = {
         datasets: [
             formatObservationsData(observations, email),
@@ -78,13 +95,14 @@ export const PreviewStats = props => {
         }
         dispatch({type: 'open_focus_panel', heading: 'Your Strengths', content: data})
     }
+
     return (
         <section id="preview-stats">
             <RadarChartMini data={radarData} openFocusPanelWith={openFocusPanelWith} />
             <h2>Your coaching strengths</h2>
             <article className="br3 pa3 bg-mv-white-dwarf lh-copy">
-                {observations.length
-                    ? sortedScores(observations).map(([tag, score]) => {
+                {scores.length
+                    ? scores.map(([tag, score]) => {
                         return (
                             <div key={`${score}-${tag}`}>
                                 <TagCount tag={{ label: score }} /><Tag tag={{ label: tag }} />

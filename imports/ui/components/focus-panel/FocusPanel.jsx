@@ -3,16 +3,17 @@ import { FocusStats } from './FocusStats'
 import { FocusJournal } from './FocusJournal'
 import { FocusCalEvts } from './FocusCalEvts'
 import './focus.css'
-import { propTypes } from 'react-addons-pure-render-mixin'
 
-export const focusPanelState = {open: false, heading: '✦✦✦✦✦', content: null}
+export const focusPanelState = {open: false, heading: '✦✦✦✦✦', content: null, scrollTo: null}
 
 export const focusPanelReducer = (state, action) => {
     switch(action.type) {
         case 'open_focus_panel':
-            return {open: true, heading: action.heading, content: action.content};
+            return {open: true, heading: action.heading, content: action.content, scrollTo: action.scrollTo};
         case 'close_focus_panel':
-            return {open: false, heading: '✦✦✦✦✦', content: null};
+            return {open: false, heading: '✦✦✦✦✦', content: null, scrollTo: null};
+        case 'scroll_to':
+            return {...state, open: true, content: action.content, scrollTo: action.scrollTo}
         default:
             return state
     }
@@ -29,10 +30,13 @@ export const Panel = props => {
         <section id="focus-panel" style={{right: open ? '-3px' : `-${window.innerWidth - 448}px`}}>
             <header className="flex items-center">
                 <h1 className="flex-auto mv0">{heading}</h1>
-                <button 
-                    type="button" 
-                    className="bg-transparent b--transparent mv-deep-space" 
-                    onClick={() => dispatch({type: 'close_focus_panel'})}>close</button>
+                {heading !== 'Reflections and Insights Journal' ? (
+                    <button 
+                        type="button" 
+                        className="bg-transparent b--transparent mv-deep-space" 
+                        onClick={() => dispatch({type: 'close_focus_panel'})}>close</button>
+                ) : null}
+
             </header>
             <main className="pt3">
                 {heading === 'Your Strengths' ? <FocusStats data={content} /> : null}

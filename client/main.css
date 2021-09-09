@@ -47,6 +47,7 @@ html {
   background-repeat: repeat-y;
   color: var(--mv-deep-space);
   overflow: hidden;
+  scroll-behavior: smooth;
 }
 :root {
   --mv-ultraviolet: #4d61f4;
@@ -139,6 +140,17 @@ h4 {
   position: absolute;
   top: .5rem;
   left: 1rem;
+}
+#sign-in {
+  background-image: url('/mv-observatory.png');
+  background-position: left bottom;
+  background-repeat: no-repeat;
+  background-size: auto 40%;
+}
+#sign-in img {
+  max-width: 100%;
+  width: 75%;
+  margin: 4rem auto 0;
 }
 #header {
   height: 5vh;

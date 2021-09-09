@@ -28,6 +28,7 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
     const dispatch = useContext(DispatchContext)
 
     const submitObservation = () => {
+        if (!feedback) return
         const observed = profiles.find(profile => profile.data.email === organizer.email)
         const [_observer] = attendees.filter(att => att.email !== organizer.email)
         let observer = profiles.find(profile => profile.data.email === _observer.email)
@@ -40,25 +41,8 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                 }
             }
         }
-        const insert = {
-            calEvt_id: id,
-            calEvt_date: dateTime,
-            observer: {
-                name: observer.data.firstName,
-                email: observer.data.email,
-                avatar: observer.data.avatarUrl || observer.data.about.avatar
-            },
-            observed: {
-                name: observed.data.firstName,
-                email: observed.data.email,
-                avatar: observed.data.avatarUrl || observed.data.about.avatar
-            },
-            obs_type: obsType,
-            reflection: feedback,
-            private_reflection: privateFeedback,
-            recording_url: recordingURL,
-        }
         if (observation && observation._id) {
+            // if the observation has already been created
             const update = Object.assign(observation, {
                 obs_type: obsType,
                 reflection: feedback,
@@ -83,7 +67,10 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                 obs_type: obsType,
                 reflection: feedback,
                 private_reflection: privateFeedback,
+                feedback: '',
+                private_feedback: '',
                 recording_url: recordingURL,
+                tags: []
             }
             ObservationsCollection.insert(insert)
         }
@@ -144,11 +131,14 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                     placeholder="Your private reflection. Only you and your observer partner will ever see this" />
             </div>
             <section className="mt3 flex justify-end items-center">
-                <button
-                    className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
-                    onClick={event => { event.stopPropagation(); submitObservation() }}>
-                    Add Reflection
-                </button>
+                {feedback && feedback !== '<p><br></p>' ? (
+                    <button
+                        className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
+                        onClick={event => { event.stopPropagation(); submitObservation() }}>
+                        Add Reflection
+                    </button>
+                ) : null}
+
             </section>
         </section>
     )

@@ -1,15 +1,12 @@
 import React, { useContext } from 'react'
-import { DispatchContext } from '../focus-panel/FocusPanel'
 import { format, differenceInDays } from 'date-fns'
 import parse from 'html-react-parser'
 import { Tag, TagCount } from '../misc/Tag'
-
-const nameOf = ({email}) => email.split('.').shift().charAt(0).toUpperCase() + email.split('.').shift().substring(1)
+import { DispatchContext, StateContext } from '../focus-panel/FocusPanel'
 
 const JournalEntry = props => {
-    const dispatch = useContext(DispatchContext)
-    
     const {
+        calEvt_id,
         calEvt_date,
         observer,
         reflection,
@@ -18,17 +15,16 @@ const JournalEntry = props => {
     
     const daysAgo = differenceInDays(new Date(), new Date(calEvt_date))
     
-    const openFocusWith = () => {
-        dispatch({type: 'open_focus_panel', heading: 'Reflections and Insights Journal', content: props.ob})
-    }
+    const state = useContext(StateContext)
+    const scrolled = state.scrollTo && state.scrollTo === calEvt_id ? 'scrolled-l' : ''
 
     return (
-        <article className="br3 bg-mv-white-dwarf mb3" onClick={openFocusWith}>
+        <article className={`relative br3 bg-mv-white-dwarf mb3 ${scrolled}`} onClick={() => props.scrollTo(calEvt_id)}>
             <header className="flex">
                 <h3 className="mv-atlas-mid ma0 flex-auto pa2 journal-extract">
                     {daysAgo} day{daysAgo === 1 ? '' : 's'} ago<br/>
-                    <span className="mv-atlas">observation by {nameOf(observer)}</span>
-                    {reflection ? parse(reflection) : <p>...</p>}
+                    <span className="mv-atlas">observation by {observer.name}</span>
+                    {reflection ? parse(reflection.substring(0,47) + '</p>') : <p>...</p>}
                     {tags.length ? (
                         <p className="ma0 pa0 tags">
                             <TagCount tag={{label: tags.length}} />
@@ -55,13 +51,30 @@ const JournalEntry = props => {
 export const PreviewJournal = props => {
     const {
         loading,
-        observations
+        observations,
+        previewPanel
     } = props
-    if (loading) return null
+
+    if (!previewPanel) return
+
+    const journals = observations.filter(ob => {
+        return previewPanel.user.data.email === ob.observed.email && ob.reflection && ob.feedback
+    })
+
+    const dispatch = useContext(DispatchContext)
+    
+    const scrollTo = calEvt_id => {
+        dispatch({
+            type: 'scroll_to',
+            content: journals,
+            scrollTo: calEvt_id
+        })
+    }
+
     return (
         <section id="preview-journal" className="overflow-scroll">
-           {observations.length 
-           ? (observations.map(ob => <JournalEntry key={ob.calEvt_id} ob={ob}/>)) 
+           {!loading && journals.length 
+           ? (journals.map(ob => <JournalEntry key={ob.calEvt_id} ob={ob} scrollTo={scrollTo} />)) 
            : <article className="br3 bg-mv-white-dwarf mb3 pa3 lh-copy">Your reflective journal and the conversations you have with other coaches about your practice will be available here.</article>}
         </section>
     )
