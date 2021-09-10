@@ -1,6 +1,6 @@
 # Multiverse CPD
 
-![the network graph on the main screen](https://user-images.githubusercontent.com/4499581/127388465-a46566f7-b4b8-4aea-bd4a-c2a07aa8daed.png)
+![the network graph on the main screen](https://user-images.githubusercontent.com/4499581/132812521-34195981-a135-4f47-9a73-96ff4de3e297.png)
 
 This is a Meteor app so get it going with:
 

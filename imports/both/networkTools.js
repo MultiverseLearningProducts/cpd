@@ -16,12 +16,12 @@ class Node {
             }
         }
         this.font = {
-            color: '#242456',
+            color: '#c8c8d5',
             size: 14,
             face: 'AtlasGrotesk-Regular',
             align: 'center'
         }
-        this.shape = 'hexagon'
+        this.shape = 'star'
         this.imagePadding = {
             left:0,
             top:0,

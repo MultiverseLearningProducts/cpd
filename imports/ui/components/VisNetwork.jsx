@@ -28,8 +28,8 @@ export const VisNetwork = React.memo(props => {
 		width: `100vw`,
 		maxWidth: "100%",
 		minWidth: "30%",
-		backgroundColor: "rgba(200,200,213,0.75)",
-		backdropFilter: "blur(7px)",
+		backgroundImage: "linear-gradient(rgba(36,36,86, 0.8), 37%, rgba(200,200,213,0.5))",
+		backdropFilter: "blur(2px)",
 		margin: "0",
 		border: "solid 0px transparent"
 	}

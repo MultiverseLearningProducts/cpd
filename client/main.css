@@ -38,17 +38,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
-html {
-  font-family: "AtlasGrotesk-Regular";
-  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/bg.svg");
-  background-position: top center;
-  background-size: 100% auto;
-  background-repeat: repeat-y;
-  color: var(--mv-deep-space);
-  overflow: hidden;
-  scroll-behavior: smooth;
-}
 :root {
   --mv-ultraviolet: #4d61f4;
   --mv-supernova: #ffe352;
@@ -58,6 +47,17 @@ html {
   --mv-deep-space: #242456;
   --mv-aurora: #59d8a1;
   --mv-gray: #c8c8d5;
+}
+html {
+  font-family: "AtlasGrotesk-Regular";
+  background-color: var(--mv-deep-space);
+  background-image: url("https://multiverselearningproducts.github.io/curriculum/branding/bg.svg");
+  background-position: bottom center;
+  background-size: 100% auto;
+  background-repeat: repeat-y;
+  color: var(--mv-deep-space);
+  overflow: hidden;
+  scroll-behavior: smooth;
 }
 .mv-atlas {
   font-family: 'AtlasGrotesk-Regular', sans-serif;

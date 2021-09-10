@@ -14,15 +14,15 @@ export const Main = (props) => {
     return (
       <section id="sign-in" className="flex flex-column vh-100 justify-start items-center">
         <img src="/observatory-header.svg"/>
-        <article className="ml-auto mr-auto mw6 lh-copy mv-white mb4">When you sign into this app with your Multiverse Google account we will pull data from HiBob and your work based Google Calendar. The observations, feedbacks, and reflections you post will be visible to all the team leads and all the coaches across LIO.<br></br><br></br>As a member of LIO you will be able to read and browse the artifacts of continual professional development across the whole community. If you are happy about this please proceed and 'Continue with Google'</article>
+        <article className="ml-auto mr-auto mw6 lh-copy mv-white mb4">When you sign into "The Observatory" with your Multiverse Google account we will pull data from HiBob and your work Google Calendar. The observations, feedbacks, and reflections you post will be visible to all the team leads and all the coaches across LIO.<br></br><br></br>As a member of LIO you will be able to read and browse the artifacts of continual professional development across the whole community. If you are happy about this then please proceed.</article>
         <AccountsReactComponent history={history} route={match.path} state='signIn' />
       </section>
     )
   } else if (user && user.services) {
     return (
       <section>
-        <header id="#header" className="flex justify-end items-center">
-          
+        <header id="#header" className="flex justify-end items-center bb b--white">
+          <span className="dib flex-auto"><img src="/observatory-header.svg" alt="the observatory" style={{maxWidth: '12rem'}}className="ml3 v-mid"/></span>
           <span className="dib mv-white mr2">v{version}</span>
           <GoogleUser user={user} />
         </header>
