@@ -1,5 +1,7 @@
 import React from 'react'
 import { Radar, Scatter } from 'react-chartjs-2'
+import { BalanceChart } from '../stats-panel/BalanceChart'
+import { format } from 'date-fns'
 import 'chartjs-adapter-date-fns'
 import { enGB } from 'date-fns/locale'
 
@@ -31,6 +33,7 @@ export const FocusStats = ({data}) => {
             tension: .1
         }],
     }
+    const scatterData = data.frequencyData
     const scatterOptions = {
         maintainAspectRatio: false,
         plugins: {
@@ -39,7 +42,9 @@ export const FocusStats = ({data}) => {
             },
             tooltip: {
                 callbacks: {
-                    label: ctx => ctx.raw.r
+                    label: ctx => {
+                        return `${format(new Date(ctx.raw.x),'eee do MMM')} - ${ctx.raw.r}`
+                    }
                 },
                 backgroundColor: '#242456',
                 displayColors: false
@@ -64,21 +69,32 @@ export const FocusStats = ({data}) => {
                 },
                 time: {
                     unit: 'week'
+                },
+                showLine: true,
+                ticks: {
+                    source: 'auto'
                 }
             },
             y: {
                 type: 'linear',
                 min: 1,
                 max: 3,
-                display: false
+                display: true,
+                showLine: true,
+                ticks: {
+                    display: false
+                }
             }
         }
     }
-    const scatterData = data.frequencyData
+
     return (
         <section>
             <article className="bg-mv-white-dwarf br3 pa3">
                 <Radar data={radarData} options={radarOptions} hight="40vw" width="40vw" />
+            </article>
+            <article className="bg-mv-white-dwarf br3 pa3 mt3">
+                <BalanceChart data={data} />
             </article>
             <article className="bg-mv-white-dwarf br3 pa3 mt3">
                 <Scatter data={scatterData} options={scatterOptions} width="100%" height="120" />

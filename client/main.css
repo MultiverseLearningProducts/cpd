@@ -101,6 +101,9 @@ html {
 .bg-mv-electron {
   background-color: var(--mv-electron);
 }
+.bg-mv-aurora {
+  background-color: var(--mv-aurora);
+}
 .b--mv-aurora {
   border-color: var(--mv-aurora);
 }
