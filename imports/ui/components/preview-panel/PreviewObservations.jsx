@@ -18,8 +18,6 @@ const googleColorCodes = [
 ]
 
 const CalEvt = props => {
-    const dispatch = useContext(DispatchContext)
-
     const {
         summary,
         colorId = 0,
@@ -29,17 +27,16 @@ const CalEvt = props => {
     const style = {
         backgroundColor: googleColorCodes[Number(colorId)]
     }
-    const openFocusWith = () => {
-        dispatch({type: 'open_focus_panel', heading: 'Add Reflections and Feedback', content: props.calEvt})
-    }
+
     if (mode > 1) {
         return <a style={style} className="dib link pa2 br3 mv1 mv-white" href={htmlLink} target="_blank">{summary}</a>
     } else {
-        return <article onClick={openFocusWith} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
+        return <article onClick={() => props.openFocusWith(props.calEvt)} style={style} className="pa2 br3 mv1 mv-white pointer">{summary}</article>
     }
 }
 
 export const PreviewObservations = props => {
+    const dispatch = useContext(DispatchContext)
     const { previewPanel, previewPanelCalEvents, observations } = props
     const {
         user: {
@@ -57,6 +54,10 @@ export const PreviewObservations = props => {
                 </article>
             </section>
         )
+    }
+
+    const openFocusWith = (calEvt) => {
+        dispatch({type: 'open_focus_panel', heading: 'Add Reflections and Feedback', content: calEvt})
     }
     
     if (!calEvents) return null
@@ -99,7 +100,7 @@ export const PreviewObservations = props => {
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
                 <h3>Past sessions to reflect on</h3>
                 {toReflect.length ? (
-                    toReflect.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
+                    toReflect.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} openFocusWith={openFocusWith} />)
                 ) : (
                     <p>You don't have sessions that need a reflection</p>
                 )}
@@ -107,7 +108,7 @@ export const PreviewObservations = props => {
             <article className="bg-mv-white-dwarf br3 ph3 pv2">
                 <h3>Feedback on these past sessions</h3>
                 {toFeedback.length ? (
-                    toFeedback.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
+                    toFeedback.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} openFocusWith={openFocusWith} />)
                 ) : (
                     <p>You don't have to give any feedback.</p>
                 )}

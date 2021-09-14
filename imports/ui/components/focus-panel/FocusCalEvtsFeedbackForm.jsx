@@ -4,6 +4,7 @@ import { ObservationsCollection } from '../../../db/ObservationsCollection'
 import { CoachRubricTags } from '../misc/CoachRubricTags'
 import { Editor } from '../misc/Editor'
 import { getFirstNameFromEmail } from '../../../both/getFirstNameFromEmail'
+import parse from 'html-react-parser'
 
 export const FocusCalEvtsFeedbackForm = props => {
     const {
@@ -15,12 +16,12 @@ export const FocusCalEvtsFeedbackForm = props => {
         attendees,
         observation
     } = props.data
-
+    
     const [feedback, setFeedback] = useState('')
     const [privateFeedback, setPrivateFeedback] = useState('')
     const [tags, setTags] = useState([])
     const dispatch = useContext(DispatchContext)
-    
+
     useEffect(() => {
         const {
             feedback = '',
@@ -30,7 +31,7 @@ export const FocusCalEvtsFeedbackForm = props => {
         setFeedback(feedback)
         setPrivateFeedback(private_feedback)
         setTags(tags)
-    }, [props.data.observation])
+    }, [props.data])
 
     const submitFeedback = () => {
         if (!feedback) return
@@ -83,10 +84,11 @@ export const FocusCalEvtsFeedbackForm = props => {
 
     return (
         <section>
-            {observation && observation.reflection ? (
-                <article className="bg-mv-white-dwarf br3 pa3 mb3">{observation.reflection}</article>
-            ) : null}
-            <form className="bg-mv-white-dwarf br3 pa3">
+            <article className="bg-mv-white-dwarf br3 pa3 mb3">{observation && observation.reflection 
+                ? parse(observation.reflection)
+                : 'Waiting for reflection'
+            }</article>
+            <form className={`bg-mv-white-dwarf br3 pa3 ${observation && observation.reflection ? '' : 'o-40'}`}>
                 <label className="dib mv2 tl w-100">Public feedback</label>
                 <Editor
                     name="feedback"
@@ -103,10 +105,12 @@ export const FocusCalEvtsFeedbackForm = props => {
                 </div>
                 <section className="flex justify-end items-center mt3">
                     <CoachRubricTags onChange={setTags} value={tags} />
-                    <button
-                        type="button"
-                        className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
-                        onClick={submitFeedback}>Add Feedback</button>
+                    {feedback ? (
+                        <button
+                            type="button"
+                            className="flex-none bg-mv-molten mv-white shadow-4 ml2 pa2 br3 b--transparent"
+                            onClick={submitFeedback}>Add Feedback</button>
+                    ) : null}
                 </section>
             </form>
         </section>

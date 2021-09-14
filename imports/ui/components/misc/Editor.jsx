@@ -12,7 +12,8 @@ export const Editor = props => {
     const options = {
         buttonList: [
             ['undo', 'redo', 'fontSize', 'fontColor', 'bold', 'underline', 'italic', 'align'],
-            ['-right', 'horizontalRule', 'list', 'link']
+            ['horizontalRule', 'list', 'link'],
+            ['fullScreen']
         ],
         fontSize: [12, 14, 18, 24],
         colorList: [

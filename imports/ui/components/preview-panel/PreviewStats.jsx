@@ -52,10 +52,12 @@ function formatTagsData(observations, email) {
         .flat()
         .sort()
 
-    return coachingRubricLabels.map(rubric => tags.reduce((memo, tag) => {
+    const labels = coachingRubricLabels.map(rubric => tags.reduce((memo, tag) => {
         if (tag === rubric) memo++
         return memo
     }, 0))
+
+    return labels.every(d => d === 0) ? [] : labels
 }
 
 export const PreviewStats = props => {

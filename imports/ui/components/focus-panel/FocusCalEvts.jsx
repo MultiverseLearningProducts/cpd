@@ -10,6 +10,7 @@ export const FocusCalEvts = props => {
             dateTime
         }
     } = props.data
+    
     return (
         <section>
             <h3 className="mt0 mv-atlas">{summary} - {format(new Date(dateTime), 'EEE do MMM - h:mm aaa')}</h3>

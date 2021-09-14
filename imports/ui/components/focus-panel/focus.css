@@ -20,7 +20,7 @@
     line-height: 1.5;
 }
 .bg-lined-paper {
-    background-image: url("data:image/svg+xml;uft8,%3Csvg%20width%3D%22515%22%20height%3D%2240%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%20opacity%3D%22.33%22%20stroke-linecap%3D%22square%22%3E%3Cpath%20stroke%3D%22%2364ABFF%22%20d%3D%22M.5%2020.5h515%22%2F%3E%3Cpath%20stroke%3D%22%23FF7C66%22%20d%3D%22M72.5.5v80%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E");
+    background-image: url("/paper-lines.svg");
     background-repeat: repeat-y;
     background-size: 100% auto;
 }

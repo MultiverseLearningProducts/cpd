@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import { Editor } from '../misc/Editor'
 import { ObservationsCollection } from '../../../db/ObservationsCollection'
 import { DispatchContext } from './FocusPanel'
@@ -11,21 +11,35 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
         },
         organizer,
         attendees,
-        observation = {
-            reflection: "",
-            private_reflection: "",
-            recording_url: "",
-            obs_type: "2"
-        }
+        observation
     } = data
 
+    const {
+        reflection = '',
+        private_reflection = '',
+        recording_url = '',
+        obs_type = '2' 
+    } = observation || {}
     
-    const [feedback, setFeedback] = useState(observation.reflection)
-    const [privateFeedback, setPrivateFeedback] = useState(observation.private_reflection)
-    const [recordingURL, setRecordingURL] = useState(observation.recording_url)
-    const [obsType, setObsType] = useState(observation.obs_type)
+    const [feedback, setFeedback] = useState(reflection)
+    const [privateFeedback, setPrivateFeedback] = useState(private_reflection)
+    const [recordingURL, setRecordingURL] = useState(recording_url)
+    const [obsType, setObsType] = useState(obs_type)
     const [formError, setFormError] = useState(null)
     const dispatch = useContext(DispatchContext)
+
+    useEffect(() => {
+        const {
+            reflection = '',
+            private_reflection = '',
+            recording_url = '',
+            obs_type = '2' 
+        } = data.observation || {}
+        setObsType(obs_type)
+        setRecordingURL(recording_url)
+        setFeedback(reflection)
+        setPrivateFeedback(private_reflection)
+    }, [data])
 
     const submitObservation = () => {
         if (!feedback) return
@@ -101,7 +115,7 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                         value={recordingURL} 
                         onChange={e => setRecordingURL(e.currentTarget.value)}
                         className='pa2 mv2 tl w-100 se-placeholder'
-                        style={{border: 'solid 1px #dadada'}}
+                        style={{border: 'solid 1px #dadada', fontSize: '13px'}}
                         placeholder="optional link to recording"
                         onBlur={checkRecordingUrl}
                         onFocus={() => setFormError(null)} />
