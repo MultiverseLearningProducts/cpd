@@ -1,6 +1,6 @@
 {
   "name": "multiverse-cpd",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "scripts": {
     "start": "meteor run --settings settings.json",
     "prod": "METEOR_SETTINGS=$(cat settings.json) node main.js",
