@@ -38,6 +38,7 @@ const CalEvt = props => {
 export const PreviewObservations = props => {
     const dispatch = useContext(DispatchContext)
     const { previewPanel, previewPanelCalEvents, observations } = props
+    const browsingUser = Meteor.user()
     const {
         user: {
             data: {
@@ -57,6 +58,7 @@ export const PreviewObservations = props => {
     }
 
     const openFocusWith = (calEvt) => {
+        if(email !== browsingUser.services.google.email) return
         dispatch({type: 'open_focus_panel', heading: 'Add Reflections and Feedback', content: calEvt})
     }
     

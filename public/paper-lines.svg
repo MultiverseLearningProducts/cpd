@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="12495px" height="386px" viewBox="0 0 12495 386" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="12497px" height="388px" viewBox="0 0 12497 388" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <title>paper-lines</title>
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" stroke-linecap="square">
-        <g id="paper-lines">
-            <line x1="0.5" y1="193.5" x2="12494.5" y2="193.5" id="Line-5" stroke="#64ABFF"></line>
-            <line x1="1582.5" y1="0.5" x2="1582.5" y2="385.5" id="Line-6" stroke="#FF7C66"></line>
+        <g id="paper-lines" transform="translate(1.000000, 1.000000)">
+            <line x1="0.5" y1="193.5" x2="12494.5" y2="193.5" id="Line-5" stroke="#64ABFF" stroke-width="2"></line>
+            <line x1="1582.5" y1="0.5" x2="1582.5" y2="385.5" id="Line-6" stroke="#FF7C66" stroke-width="3"></line>
         </g>
     </g>
 </svg>
