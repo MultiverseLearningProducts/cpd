@@ -92,10 +92,18 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
     }
 
     const checkRecordingUrl = event => {
-        const { value } = event.currentTarget
-        if (value.match(/zoom\.us\/rec\/share/) || value.match(/youtube\.com|youtu.be/)) return
-        setRecordingURL('')
-        setFormError('Must be a zoom or youtube link')
+        const url = event.currentTarget.value
+        if (url.match(/zoom\.us\/rec\/share/)) {
+            const [zoomUrl = ""] = url.match(/https\S+/)
+            const [zoomPasscode = ""] = url.match(/\S+$/)
+            setRecordingURL(zoomUrl)
+            if (zoomPasscode !== zoomUrl) setFeedback(`[zoom passcode: ${zoomPasscode}] ${feedback}`)
+        } else if (url.match(/youtube\.com|youtu.be/)) {
+            setRecordingURL(url)
+        } else {
+            setRecordingURL('')
+            setFormError('Must be a valid zoom recording link or a youtube link')
+        }
     }
 
     return (
@@ -104,7 +112,7 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                 <div className="flex-auto pr3">
                     <label className="dib mv2 tl w-100">
                         Link to recording {formError 
-                        ? <span className="red">⚠️{formError}!</span> 
+                        ? <span className="red">⚠️ {formError}!</span> 
                         : null}
                     </label>
                     <input 
@@ -113,11 +121,11 @@ export const FocusCalEvtsReflectionForm = ({data, profiles}) => {
                         pattern="zoom\.us\/rec\/share"
                         title="Must be a valid zoom link"
                         value={recordingURL} 
-                        onChange={e => setRecordingURL(e.currentTarget.value)}
+                        onChange={() => {}}
                         className='pa2 mv2 tl w-100 se-placeholder'
                         style={{border: 'solid 1px #dadada', fontSize: '13px'}}
-                        placeholder="optional link to recording"
-                        onBlur={checkRecordingUrl}
+                        placeholder="Paste recording info"
+                        onInput={checkRecordingUrl}
                         onFocus={() => setFormError(null)} />
                 </div>
                 <div className="flex-none">
