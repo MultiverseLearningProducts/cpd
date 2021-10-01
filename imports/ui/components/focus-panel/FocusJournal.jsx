@@ -29,6 +29,7 @@ export const FocusJournalEntry = ({ data }) => {
         ref.current.scrollIntoView({behavior: "smooth", block: "center"})
         scrolled = 'scrolled-r'
     }
+
     return (
         <section ref={ref} id={calEvt_id} className={`relative flex flex-column mt3 ${scrolled}`}>
             <header className="flex-none h2 flex items-center justify-end">
@@ -38,6 +39,9 @@ export const FocusJournalEntry = ({ data }) => {
             <main className="flex-auto">
                 <article>
                     {parse(reflection)}
+                </article>
+                <article className="relative feedback i pl5">
+                    <div style={{backgroundImage: `url(${observer.avatar})`}}></div>
                     {parse(feedback)}
                 </article>
             </main>

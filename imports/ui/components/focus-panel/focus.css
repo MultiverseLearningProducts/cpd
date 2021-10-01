@@ -24,9 +24,7 @@
     background-repeat: repeat-y;
     background-size: 100% auto;
 }
-.paper main article p:last-child {
-    font-style: italic;
-}
+
 .scrolled-r::after {
     content: ' ';
     background-image: url('/mv-arrow-r.svg');
@@ -43,4 +41,15 @@
     outline-width: .25rem;
     outline-offset: -.25rem;
     outline-color: var(--mv-supernova);   
+}
+.feedback div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    border: solid 2px var(--mv-supernova);
+    background-size: cover;
+    background-position: center center;
 }
