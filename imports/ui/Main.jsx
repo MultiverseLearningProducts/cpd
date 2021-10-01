@@ -4,6 +4,7 @@ import { useCurrentUser } from 'react-meteor-hooks'
 import { AccountsReactComponent } from 'meteor/gwened:meteor-accounts-react'
 import { version } from '/package.json'
 import { MainContainer } from './MainContainer'
+import { Link } from 'react-router-dom'
 
 
 export const Main = (props) => {
@@ -23,6 +24,7 @@ export const Main = (props) => {
       <section>
         <header id="#header" className="flex justify-end items-center bb b--white">
           <span className="dib flex-auto"><img src="/observatory-header.svg" alt="the observatory" style={{maxWidth: '12rem'}}className="ml3 v-mid"/></span>
+          <span className="dib mr2"><Link className="dib link mv-white" to="/help" target="_blank">help</Link></span>
           <span className="dib mv-white mr2">v{version}</span>
           <GoogleUser user={user} />
         </header>

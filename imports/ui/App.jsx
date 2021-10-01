@@ -2,6 +2,7 @@ import React from 'react'
 import { Redirect } from 'react-router'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { Main } from './Main'
+import { Help } from './components/misc/Help.jsx'
 
 Meteor.subscribe('users')
 
@@ -25,6 +26,7 @@ export const App = () => {
         <Route exact path='/' component={auth} />
         <Route exact path='/sign-in' component={auth} />
         <Route exact path='/sign-out' component={auth} />
+        <Route exact path='/help' component={Help} />
       </Switch>
     </BrowserRouter>
   )

@@ -1,0 +1,28 @@
+#help {
+    background-color: rgba(244,244,244,0.25);
+    backdrop-filter: blur(5px);
+    border-radius: .5rem;
+    border: 2px solid var(--mv-supernova);
+    width: 90%;
+    margin: 1.5rem auto;
+    max-width: 48rem;
+    transition: left 1s;
+    position: fixed;
+    top: 3rem;
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+    overflow-y: scroll;
+}
+#help blockquote {
+    margin-top: 0;
+    text-align: center;
+    padding: 0 0 2rem 0;
+    background-image: url('/mv-underline.png');
+    background-repeat: no-repeat;
+    background-size: 80% auto;
+    background-position: center bottom;
+}
+#help section p {
+    line-height: 1.5;
+}
