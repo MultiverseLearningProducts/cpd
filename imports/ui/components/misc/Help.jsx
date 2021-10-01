@@ -12,7 +12,7 @@ export const Help = () => {
             <main id="help" className="pa3 br3 overflow-y-scroll">
                 <section className="bg-mv-white-dwarf pa3 br3">
                     <h1 className="tc">Welcome to the Observatory</h1>
-                    <blockquote>This is where you come to observer the stars of Multiverse</blockquote>
+                    <blockquote>This is where you come to observe the stars of Multiverse</blockquote>
                     <p>This help page is your place to start. The app has 3 components to help you grow and develop your coaching practice here at Multiverse.</p>
                     <h2>Journal Stats and Observations</h2>
                     <img src="https://user-images.githubusercontent.com/4499581/135095914-40c4b5e5-a80d-45b4-9cb0-dd5f95253105.png" className="w-100" />
