@@ -53,3 +53,10 @@
     background-size: cover;
     background-position: center center;
 }
+.hr-journal {
+    border: solid 1px var(--mv-supernova);
+}
+.video-link-logo {
+    height: 1rem;
+    transform: translate(0, 2px);
+}

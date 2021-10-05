@@ -8,7 +8,10 @@ import { StateContext } from './FocusPanel'
 
 const videoLink = recording_url => {
     if (!recording_url) return null
-    return <a className="link pointer" href={recording_url} target="_blank">📺</a>
+    let vendor = 'default';
+    if (recording_url.match(/zoom.us/)) vendor = 'zoom'
+    if (recording_url.match(/you/)) vendor = 'youtube'
+    return <a className="link pointer" href={recording_url} target="_blank"><img src={`${vendor}.png`} alt="link to video content" className="video-link-logo" /></a>
 }
 
 export const FocusJournalEntry = ({ data }) => {
@@ -33,8 +36,9 @@ export const FocusJournalEntry = ({ data }) => {
     return (
         <section ref={ref} id={calEvt_id} className={`relative flex flex-column mt3 ${scrolled}`}>
             <header className="flex-none h2 flex items-center justify-end">
-                <div className="flex-auto"><hr style={{border: '1px dashed var(--mv-deep-space)'}}/></div>
-                <div className="ml3">{date} feedback from {getFirstNameFromEmail(observer.email)}&nbsp;{videoLink(recording_url)}</div>
+                <div className="flex-auto"><hr className="hr-journal" /></div>
+                <div className="mh2 flex-none">{date} {videoLink(recording_url)} feedback by {getFirstNameFromEmail(observer.email)}</div>
+                <div className="flex-auto"><hr className="hr-journal" /></div>
             </header>
             <main className="flex-auto">
                 <article>

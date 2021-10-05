@@ -354,7 +354,7 @@ input[type="url"]::placeholder {
   width: 16rem;
 }
 .journal-extract p.tags {
-  text-overflow: initial;
+  text-overflow: ellipsis;
   overflow-x: scroll;
 }
 @media screen and (min-width: 30em) {

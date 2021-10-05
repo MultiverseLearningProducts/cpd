@@ -34,7 +34,6 @@ export const FocusCalEvtsFeedbackForm = props => {
     }, [props.data])
 
     const submitFeedback = () => {
-        if (!feedback) return
         if (!props.data.observation) {
             const observed = props.profiles.find(profile => profile.data.email === organizer.email)
             const [_observer] = attendees.filter(att => att.email !== organizer.email)
@@ -84,17 +83,17 @@ export const FocusCalEvtsFeedbackForm = props => {
 
     return (
         <section>
-            <article className="bg-mv-white-dwarf br3 pa3 mb3">{observation && observation.reflection 
-                ? parse(observation.reflection)
-                : 'Waiting for reflection'
-            }</article>
-            <form className={`bg-mv-white-dwarf br3 pa3 ${observation && observation.reflection ? '' : 'o-40'}`}>
+            {observation && observation.reflection 
+                ? <article className="bg-mv-white-dwarf br3 pa3 mb3">{parse(observation.reflection)}</article>
+                : null
+            }
+            <form className="bg-mv-white-dwarf br3 pa3">
                 <label className="dib mv2 tl w-100">Public feedback</label>
                 <Editor
                     name="feedback"
                     defaultValue={feedback}
                     onChange={setFeedback}
-                    placeholder={`Respond to ${getFirstNameFromEmail(organizer.email)}'s reflection. Pick out aspects of the rubric that you observed.`} />
+                    placeholder={`Add your feedback. Pick out aspects of the rubric that you observed. What else did you observe?`} />
                 <div className="o-80">
                     <label className="dib mv2 tl w-100">Private feedback</label>
                     <Editor
