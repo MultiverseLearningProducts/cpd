@@ -41,10 +41,10 @@ export const FocusJournalEntry = ({ data }) => {
                 <div className="flex-auto"><hr className="hr-journal" /></div>
             </header>
             <main className="flex-auto">
-                <article>
+                <article className="mw7 lh-copy">
                     {parse(reflection)}
                 </article>
-                <article className="relative feedback i pl5">
+                <article className="relative feedback i pl5 mw7 lh-copy">
                     <div style={{backgroundImage: `url(${observer.avatar})`}}></div>
                     {parse(feedback)}
                 </article>

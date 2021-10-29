@@ -88,7 +88,7 @@ export const PreviewObservations = props => {
                 {observing.length ? (
                     observing.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
-                    <p>Set up some observations. Go see some coaching!</p>
+                    <p>Go see some coaching! Get invited to a session.</p>
                 )}
             </article>
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
@@ -96,11 +96,11 @@ export const PreviewObservations = props => {
                 {observedBy.length ? (
                     observedBy.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} />)
                 ) : (
-                    <p>Set up some observations. Get someone to watch you coaching!</p>
+                    <p>Set up some observations. Invite someone to watch you coaching!</p>
                 )}
             </article>
             <article className="bg-mv-white-dwarf br3 ph3 pv2 mb3">
-                <h3>Past sessions to reflect on</h3>
+                <h3>Sessions you were observed</h3>
                 {toReflect.length ? (
                     toReflect.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} openFocusWith={openFocusWith} />)
                 ) : (
@@ -108,11 +108,11 @@ export const PreviewObservations = props => {
                 )}
             </article>
             <article className="bg-mv-white-dwarf br3 ph3 pv2">
-                <h3>Feedback on these past sessions</h3>
+                <h3>Other coaches you observed</h3>
                 {toFeedback.length ? (
                     toFeedback.map(calEvt => <CalEvt key={calEvt.id} calEvt={calEvt} openFocusWith={openFocusWith} />)
                 ) : (
-                    <p>You don't have to give any feedback.</p>
+                    <p>You don't have to give any feedback</p>
                 )}
             </article>
         </section>
