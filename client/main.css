@@ -267,6 +267,7 @@ input[type="url"]::placeholder {
 #control-panel {
   background-color: rgba(244,244,244,0.25);
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   position: absolute;
   top: 1rem;
   padding: 1rem 1rem 5rem 1rem;
@@ -301,6 +302,7 @@ input[type="url"]::placeholder {
 #preview-panel {
   background-color: rgba(244,244,244,0.25);
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   position: absolute;
   bottom: 2rem;
   padding: 1rem;
@@ -313,6 +315,7 @@ input[type="url"]::placeholder {
 #search {
   background-color: rgba(244,244,244,0.25);
   backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
   top: 0;
   right: 0;
   padding: .5rem .6rem;
@@ -322,8 +325,9 @@ input[type="url"]::placeholder {
 }
 #search .search-icon {
   position: absolute;
-  top: .6rem;
-  right: 0.5rem;
+  top: 1.1rem;
+  right: 0;
+  height: 30px;
 }
 .suggestion:hover {
   background-color: #64abff;
@@ -355,7 +359,7 @@ input[type="url"]::placeholder {
 }
 .journal-extract p.tags {
   text-overflow: ellipsis;
-  overflow-x: scroll;
+  overflow-x: scroll auto;
 }
 @media screen and (min-width: 30em) {
   .network-loading::after {

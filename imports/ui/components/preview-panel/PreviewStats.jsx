@@ -100,7 +100,7 @@ export const PreviewStats = props => {
 
     return (
         <section id="preview-stats">
-            <RadarChartMini data={radarData} openFocusPanelWith={openFocusPanelWith} />
+            {/* <RadarChartMini data={radarData} openFocusPanelWith={openFocusPanelWith} /> */}
             <h2>Your coaching strengths</h2>
             <article className="br3 pa3 bg-mv-white-dwarf lh-copy">
                 {scores.length

@@ -3,7 +3,7 @@ import { Scatter } from 'react-chartjs-2'
 import 'chartjs-adapter-date-fns'
 import { enGB } from 'date-fns/locale'
 
-export const FrequencyChart = ({ data }) => {
+export const FrequencyChart = ({ data, openFocusPanelWith }) => {
     if (!data.datasets[0].data.length) {
         return (
             <p className="br3 bg-mv-white-dwarf pa3 lh-copy">
@@ -54,7 +54,7 @@ export const FrequencyChart = ({ data }) => {
     }
 
     return (
-        <section id="frequency-chart" className="mt3">
+        <section id="frequency-chart" className="mt3" onClick={openFocusPanelWith}>
             <h2>Observations Frequency Chart</h2>
             <Scatter data={data} options={options} width="200" height="120" />
         </section>

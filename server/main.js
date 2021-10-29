@@ -65,7 +65,8 @@ Meteor.methods({
     }
   },
   getProfiles() {
-    const profiles = ProfilesCollection.find({'work.department': 'Learning , Innovation & Operations'})
+    const profiles = ProfilesCollection.find({})
+    // const profiles = ProfilesCollection.find({'work.department': 'Learning , Innovation & Operations'})
     return createForNetwork(profiles)
   },
   getProfile(identifier) {
@@ -95,8 +96,6 @@ Meteor.methods({
 
       const data = await res.json()
       if (data.error) throw data.error
-      
-      console.info(`${email} ${data.items.length} calEvts`)
       return data
     } catch(err) {
       if (err.status === 'UNAUTHENTICATED') {

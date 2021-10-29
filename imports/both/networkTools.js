@@ -56,8 +56,7 @@ export function createForNetwork (data) {
                 'jacqueline.chan@multiverse.io',
                 'nejmi.alexander@multiverse.io'
             ]
-            const isCoach = employee.data.work.title.toLowerCase().includes('coach')
-            || hasCoachRole.includes(employee.data.email)
+            const isCoach = employee.data.work.title.toLowerCase().includes('coach') || hasCoachRole.includes(employee.data.email)
             const background = isCoach ? '#64abff' : '#c8c8d5'
             employee.color.background = background
             return employee

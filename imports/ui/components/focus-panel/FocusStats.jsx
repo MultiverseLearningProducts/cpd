@@ -90,9 +90,9 @@ export const FocusStats = ({data}) => {
 
     return (
         <section>
-            <article className="bg-mv-white-dwarf br3 pa3">
+            {/* <article className="bg-mv-white-dwarf br3 pa3">
                 <Radar data={radarData} options={radarOptions} hight="40vw" width="40vw" />
-            </article>
+            </article> */}
             <article className="bg-mv-white-dwarf br3 pa3 mt3">
                 <BalanceChart data={data} />
             </article>
