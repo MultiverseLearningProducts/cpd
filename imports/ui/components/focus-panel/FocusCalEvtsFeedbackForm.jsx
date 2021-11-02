@@ -3,8 +3,8 @@ import { DispatchContext } from './FocusPanel'
 import { ObservationsCollection } from '../../../db/ObservationsCollection'
 import { CoachRubricTags } from '../misc/CoachRubricTags'
 import { Editor } from '../misc/Editor'
-import { getFirstNameFromEmail } from '../../../both/getFirstNameFromEmail'
 import parse from 'html-react-parser'
+import { VideoLink } from './FocusJournal'
 
 export const FocusCalEvtsFeedbackForm = props => {
     const {
@@ -85,6 +85,10 @@ export const FocusCalEvtsFeedbackForm = props => {
         <section>
             {observation && observation.reflection 
                 ? <article className="bg-mv-white-dwarf br3 pa3 mb3">{parse(observation.reflection)}</article>
+                : null
+            }
+            {observation && observation.recording_url 
+                ? <article className="bg-mv-white-dwarf br3 pa3 mb3">Watch the recording <VideoLink recordingUrl={observation.recording_url} /></article>
                 : null
             }
             <form className="bg-mv-white-dwarf br3 pa3">
